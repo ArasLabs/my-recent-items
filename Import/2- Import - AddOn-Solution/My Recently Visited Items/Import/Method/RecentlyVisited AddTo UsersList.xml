@@ -11,14 +11,12 @@
 //debugger;
 var thisId = document.thisItem.getId();
 var thisType = document.thisItem.getType();
-var innovator = top.aras.newIOMInnovator();
 
 // check if item still exists and did not get deleted
-var thisItem = top.aras.newIOMItem();
-thisItem.setType(thisType);
-thisItem.setAction("RecentlyVisited sAddTo UsersList");
-thisItem.setId(thisId);
+var thisItem = top.aras.newIOMItem(thisType,"RecentlyVisited sAddTo UsersList");
+thisItem.setID(thisId);
 thisItem = thisItem.apply();
+
 if (thisItem.isError()) {
   return top.aras.AlertError(thisItem.getErrorString());
 }

@@ -16,12 +16,14 @@ This project and the following release notes have been migrated from the old Ara
 
 Release | Notes
 --------|--------
+[v2](https://github.com/ArasLabs/my-recent-items/releases/tag/v2) | Solution Package and Documentation. It loads on top of the standard ARAS Solutions PE,PM,QP without any conflicts.
 [v1](https://github.com/ArasLabs/my-recent-items/releases/tag/v1) | Solution Package and Documentation. It loads on top of the standard ARAS Solutions PE,PM,QP without any conflicts.
 
 #### Supported Aras Versions
 
 Project | Aras
 --------|------
+[v2](https://github.com/ArasLabs/my-recent-items/releases/tag/v2) | 10 - 10 SP3
 [v1](https://github.com/ArasLabs/my-recent-items/releases/tag/v1) | 9.3 SPx, 9.4 SPx
 
 ## Installation

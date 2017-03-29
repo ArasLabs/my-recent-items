@@ -1,3 +1,0 @@
-<imports>
-  <package name="Common Utilities" path="Common Utilities\Import" />
-</imports>

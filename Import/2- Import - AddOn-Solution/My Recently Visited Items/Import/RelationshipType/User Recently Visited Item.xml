@@ -9,7 +9,6 @@
   <inc_related_key_name>1</inc_related_key_name>
   <is_list_type>0</is_list_type>
   <label xml:lang="en">My Recentily Visited Items</label>
-  <name>User Recently Visited Item</name>
   <new_show_related>0</new_show_related>
   <related_notnull>0</related_notnull>
   <related_option>2</related_option>
@@ -27,13 +26,13 @@
     <is_versionable>0</is_versionable>
     <label xml:lang="en">User Recently Visited Item</label>
     <label_plural xml:lang="en">My Recently Visited Items</label_plural>
-    <manual_versioning>0</manual_versioning>
-    <name>User Recently Visited Item</name>
-    <open_icon>../images/Icons/16x16/16x16_checkout.gif</open_icon>
+    <large_icon>../Images/NextPage.svg</large_icon>
+    <open_icon>../Images/NextPage.svg</open_icon>
     <revisions keyed_name="Default" type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
     <show_parameters_tab>1</show_parameters_tab>
     <unlock_on_logout>0</unlock_on_logout>
     <use_src_access>1</use_src_access>
+    <name>User Recently Visited Item</name>
     <Relationships>
      <Item type="Property" id="D865BCC2C5B445AB8D8C1DC71DC92418" action="add">
       <column_alignment>left</column_alignment>
@@ -46,12 +45,12 @@
       <is_multi_valued>0</is_multi_valued>
       <is_required>0</is_required>
       <label xml:lang="en">Insert Date</label>
-      <name>insert_date</name>
       <range_inclusive>0</range_inclusive>
       <readonly>0</readonly>
       <sort_order>110</sort_order>
       <source_id keyed_name="User Recently Visited Item" type="ItemType" name="User Recently Visited Item">B80B508098074C8D8DFB90979C2D7CF9</source_id>
       <track_history>0</track_history>
+      <name>insert_date</name>
      </Item>
      <Item type="Property" id="6CD1B763CA0F4C90B20DD99E4D089675" action="add">
       <column_alignment>left</column_alignment>
@@ -64,13 +63,13 @@
       <is_multi_valued>0</is_multi_valued>
       <is_required>0</is_required>
       <label xml:lang="en">Config ID</label>
-      <name>item_config_id_string</name>
       <range_inclusive>0</range_inclusive>
       <readonly>0</readonly>
       <sort_order>10</sort_order>
       <source_id keyed_name="User Recently Visited Item" type="ItemType" name="User Recently Visited Item">B80B508098074C8D8DFB90979C2D7CF9</source_id>
       <stored_length>32</stored_length>
       <track_history>0</track_history>
+      <name>item_config_id_string</name>
      </Item>
      <Item type="Property" id="51298B9E843C46FF8C7BD997FFADA660" action="add">
       <column_alignment>left</column_alignment>
@@ -83,13 +82,13 @@
       <is_multi_valued>0</is_multi_valued>
       <is_required>0</is_required>
       <label xml:lang="en">Gen</label>
-      <name>item_generation</name>
       <range_inclusive>0</range_inclusive>
       <readonly>0</readonly>
       <sort_order>70</sort_order>
       <source_id keyed_name="User Recently Visited Item" type="ItemType" name="User Recently Visited Item">B80B508098074C8D8DFB90979C2D7CF9</source_id>
       <stored_length>80</stored_length>
       <track_history>0</track_history>
+      <name>item_generation</name>
      </Item>
      <Item type="Property" id="1C38DDC613AE4DE88B495D475D4379C1" action="add">
       <column_alignment>left</column_alignment>
@@ -102,13 +101,13 @@
       <is_multi_valued>0</is_multi_valued>
       <is_required>0</is_required>
       <label xml:lang="en">Item ID</label>
-      <name>item_id_string</name>
       <range_inclusive>0</range_inclusive>
       <readonly>0</readonly>
       <sort_order>20</sort_order>
       <source_id keyed_name="User Recently Visited Item" type="ItemType" name="User Recently Visited Item">B80B508098074C8D8DFB90979C2D7CF9</source_id>
       <stored_length>32</stored_length>
       <track_history>0</track_history>
+      <name>item_id_string</name>
      </Item>
      <Item type="Property" id="CC6C367F7D1B4404A18F836559970825" action="add">
       <column_alignment>left</column_alignment>
@@ -121,16 +120,15 @@
       <is_multi_valued>0</is_multi_valued>
       <is_required>0</is_required>
       <label xml:lang="en">Type</label>
-      <name>item_type</name>
       <range_inclusive>0</range_inclusive>
       <readonly>0</readonly>
       <sort_order>40</sort_order>
       <source_id keyed_name="User Recently Visited Item" type="ItemType" name="User Recently Visited Item">B80B508098074C8D8DFB90979C2D7CF9</source_id>
       <stored_length>64</stored_length>
       <track_history>0</track_history>
+      <name>item_type</name>
      </Item>
      <Item type="TOC Access" id="998CA70BA26B43CFB2C797A9FD20CCDD" action="add">
-      <category>My Innovator</category>
       <related_id keyed_name="World" type="Identity">
        <Item type="Identity" action="get" select="id">
         <name>World</name>
@@ -138,6 +136,7 @@
       </related_id>
       <sort_order>128</sort_order>
       <source_id keyed_name="User Recently Visited Item" type="ItemType" name="User Recently Visited Item">B80B508098074C8D8DFB90979C2D7CF9</source_id>
+      <category>My Innovator</category>
      </Item>
      <Item type="TOC View" id="B1B4730EA5654104BF063ADF2CA532FE" action="add">
       <form keyed_name="User Recently Visited Items Grid" type="Form">5CA17F8211E4481CB71A5E75567E62E5</form>
@@ -154,9 +153,28 @@
   </relationship_id>
   <sort_order>512</sort_order>
   <source_id keyed_name="User" type="ItemType" name="User">45E899CD2859442982EB22BB2DF683E5</source_id>
+  <name>User Recently Visited Item</name>
  </Item>
  <Item type="ItemType" id="B80B508098074C8D8DFB90979C2D7CF9" action="edit">
   <Relationships>
+   <Item type="Property" action="edit" where="source_id='B80B508098074C8D8DFB90979C2D7CF9' and name='classification'">
+    <column_alignment>left</column_alignment>
+    <data_type>string</data_type>
+    <is_hidden>1</is_hidden>
+    <is_hidden2>1</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <label xml:lang="en">Type</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>238</sort_order>
+    <source_id keyed_name="User Recently Visited Item" type="ItemType" name="User Recently Visited Item">B80B508098074C8D8DFB90979C2D7CF9</source_id>
+    <stored_length>512</stored_length>
+    <track_history>0</track_history>
+    <name>classification</name>
+   </Item>
    <Item type="Property" action="edit" where="source_id='B80B508098074C8D8DFB90979C2D7CF9' and name='generation'">
     <column_alignment>left</column_alignment>
     <data_type>integer</data_type>
@@ -166,12 +184,68 @@
     <is_keyed>0</is_keyed>
     <is_multi_valued>0</is_multi_valued>
     <is_required>0</is_required>
-    <name>generation</name>
+    <label xml:lang="en">Gen</label>
     <range_inclusive>0</range_inclusive>
     <readonly>1</readonly>
     <sort_order>2432</sort_order>
     <source_id keyed_name="User Recently Visited Item" type="ItemType" name="User Recently Visited Item">B80B508098074C8D8DFB90979C2D7CF9</source_id>
     <track_history>0</track_history>
+    <name>generation</name>
+   </Item>
+   <Item type="Property" action="edit" where="source_id='B80B508098074C8D8DFB90979C2D7CF9' and name='keyed_name'">
+    <column_alignment>left</column_alignment>
+    <data_type>string</data_type>
+    <is_hidden>1</is_hidden>
+    <is_hidden2>1</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <label xml:lang="en">Number/Name</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>366</sort_order>
+    <source_id keyed_name="User Recently Visited Item" type="ItemType" name="User Recently Visited Item">B80B508098074C8D8DFB90979C2D7CF9</source_id>
+    <stored_length>128</stored_length>
+    <track_history>0</track_history>
+    <name>keyed_name</name>
+   </Item>
+   <Item type="Property" action="edit" where="source_id='B80B508098074C8D8DFB90979C2D7CF9' and name='locked_by_id'">
+    <column_alignment>left</column_alignment>
+    <data_source keyed_name="User" type="ItemType" name="User">45E899CD2859442982EB22BB2DF683E5</data_source>
+    <data_type>item</data_type>
+    <is_hidden>1</is_hidden>
+    <is_hidden2>1</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <item_behavior>float</item_behavior>
+    <label xml:lang="en">L</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>1</readonly>
+    <sort_order>1646</sort_order>
+    <source_id keyed_name="User Recently Visited Item" type="ItemType" name="User Recently Visited Item">B80B508098074C8D8DFB90979C2D7CF9</source_id>
+    <track_history>0</track_history>
+    <name>locked_by_id</name>
+   </Item>
+   <Item type="Property" action="edit" where="source_id='B80B508098074C8D8DFB90979C2D7CF9' and name='major_rev'">
+    <column_alignment>left</column_alignment>
+    <data_type>string</data_type>
+    <is_hidden>1</is_hidden>
+    <is_hidden2>1</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <label xml:lang="en">Rev</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>1902</sort_order>
+    <source_id keyed_name="User Recently Visited Item" type="ItemType" name="User Recently Visited Item">B80B508098074C8D8DFB90979C2D7CF9</source_id>
+    <stored_length>8</stored_length>
+    <track_history>0</track_history>
+    <name>major_rev</name>
    </Item>
    <Item type="Property" action="edit" where="source_id='B80B508098074C8D8DFB90979C2D7CF9' and name='source_id'">
     <column_alignment>left</column_alignment>
@@ -186,15 +260,33 @@
     <is_required>0</is_required>
     <item_behavior>float</item_behavior>
     <label xml:lang="en">User</label>
-    <name>source_id</name>
     <range_inclusive>0</range_inclusive>
     <readonly>0</readonly>
     <sort_order>1</sort_order>
     <source_id keyed_name="User Recently Visited Item" type="ItemType" name="User Recently Visited Item">B80B508098074C8D8DFB90979C2D7CF9</source_id>
     <track_history>0</track_history>
+    <name>source_id</name>
+   </Item>
+   <Item type="Property" action="edit" where="source_id='B80B508098074C8D8DFB90979C2D7CF9' and name='state'">
+    <column_alignment>left</column_alignment>
+    <data_type>string</data_type>
+    <is_hidden>1</is_hidden>
+    <is_hidden2>1</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <label xml:lang="en">Status</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>1</readonly>
+    <sort_order>1518</sort_order>
+    <source_id keyed_name="User Recently Visited Item" type="ItemType" name="User Recently Visited Item">B80B508098074C8D8DFB90979C2D7CF9</source_id>
+    <stored_length>32</stored_length>
+    <track_history>0</track_history>
+    <name>state</name>
    </Item>
   </Relationships>
  </Item>
- <Item type="View" action="delete" where="source_id='B80B508098074C8D8DFB90979C2D7CF9'"></Item>
- <Item type="Form" action="delete" where="name='User Recently Visited Item'"></Item>
+ <Item type="View" action="delete" where="source_id='B80B508098074C8D8DFB90979C2D7CF9'" />
+ <Item type="Form" action="delete" where="name='User Recently Visited Item'" />
 </AML>

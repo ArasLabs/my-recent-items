@@ -12,7 +12,7 @@ Dim inn As Innovator = Me.getInnovator()
 Dim aml_cmd As Item
 
 Function Main() As Item
-  'System.Diagnostics.Debugger.Break()
+	'System.Diagnostics.Debugger.Break()
 
   Dim thisId As String = Me.getID()
   Dim thisType As String = Me.GetType()
@@ -24,7 +24,7 @@ Function Main() As Item
   Dim userId As String = inn.getUserID()
   
   'get this Item with relevant data
-  Dim selectProps As String = "id,config_id,current_state,classification,generation,major_rev,keyed_name"
+  Dim selectProps As String = "id,config_id,current_state,classification,generation,major_rev,keyed_name,is_root"
   
   aml_cmd = Me.newItem(thisType, "get")
   aml_cmd.setId(thisId)
@@ -34,6 +34,11 @@ Function Main() As Item
   
   Dim thisItem As Item = aml_cmd.apply()
   If thisItem.isError() Then Return thisItem
+
+  'filter item types not to be added ...
+  If (thisType="Item Folder") Then
+    If (thisItem.getProperty("is_root","0") <> "1") Then Return Me  'only root folders are added
+  End If
   
   'add to users recently visited list
   aml_cmd = AddRecentlyVisited(userId,thisItem)

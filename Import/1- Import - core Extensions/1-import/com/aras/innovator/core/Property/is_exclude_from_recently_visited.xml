@@ -9,7 +9,6 @@
   <is_keyed>0</is_keyed>
   <is_multi_valued>0</is_multi_valued>
   <is_required>0</is_required>
-  <default_value>1</default_value>
   <label xml:lang="en">Exclude Recently Visited</label>
   <name>is_exclude_from_recently_visited</name>
   <range_inclusive>0</range_inclusive>

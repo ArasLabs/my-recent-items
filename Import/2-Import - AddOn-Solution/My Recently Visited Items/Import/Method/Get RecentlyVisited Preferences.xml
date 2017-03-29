@@ -1,0 +1,72 @@
+﻿<AML>
+ <Item type="Method" id="33B9E60015F34907924788C6CF1ECBD0" action="add">
+  <comments>returns pereference settings of world or user (if set)</comments>
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[//Generic method called from other methods
+//context Item is not relevant
+// optional:  item attribute "itemTypes" can have an "*" or a comma separated list of itemType names
+//            if missing, it will be treated as "*"
+
+// returns item of type "RecentlyVisited_Preferences" with relationships "RecentlyVisited_ItemType"
+
+//System.Diagnostics.Debugger.Break();
+// get alias identity of current user
+string aml = "<Item type='Alias' action='get' select='related_id, from_date, end_date'>";
+ aml += 		"<source_id>" + this.getInnovator().getUserID() + "</source_id>";
+ aml +=			"<related_id condition='is not null'></related_id>";
+ aml +=		"</Item>";
+Item query = this.newItem();
+query.loadAML(aml);
+query = query.apply();
+string userAliasId = query.getRelatedItemID();
+
+// get preferences of "user"
+string itemTypes = this.getAttribute("itemTypes","");
+if (itemTypes == "*") {itemTypes = "";}
+
+aml = "<Item type='Preference' action='get' >";
+aml +=   "<identity_id>"+userAliasId+"</identity_id>";
+aml +=   "<Relationships>";
+aml +=    "<Item type='RecentlyVisited_Preferences' action='get' select='*' >";
+aml +=     "<Relationships>";
+aml +=      "<Item type='RecentlyVisited_ItemType' action='get' select='*' >";
+aml +=        "<is_disabled condition='ne'>1</is_disabled>";
+if (itemTypes != "") {
+aml +=        "<item_type_name condition='in' >'"+itemTypes.Replace(",","','")+"'</item_type_name>";
+}
+aml +=        "<Relationships>";
+aml +=         "<Item type='RecentlyVisited_TypeView' action='get' select='*' >";
+aml +=          "<is_disabled condition='ne'>1</is_disabled>";
+aml +=         "</Item>";
+aml +=        "</Relationships>";
+aml +=       "</Item>";
+aml +=     "</Relationships>";
+aml +=    "</Item>";
+aml +=   "</Relationships>";
+aml +=  "</Item>";
+
+query = this.newItem();
+query.loadAML(aml);
+Item recentlyVisitedPreferences = query.apply();
+
+if (recentlyVisitedPreferences.isError()) {
+	// read preferences of World
+	query.setProperty("identity_id","A73B655731924CD0B027E4F4D5FCC0A9");  // unique id of world identity
+	recentlyVisitedPreferences = query.apply();
+	if (recentlyVisitedPreferences.isError()) {return recentlyVisitedPreferences;}
+}
+
+query = recentlyVisitedPreferences.getRelationships("RecentlyVisited_Preferences");
+if (query.isError()) {return query;}
+query = query.getItemByIndex(0);  // only 1 relship item is allowed!
+if (query.node == null) {return this.getInnovator().newError("No a single item for relationship 'RecentlyVisited_Preferences'");}
+
+aml = query.node.InnerXml;
+aml = "<Item type='RecentlyVisited_Preferences' id='"+query.getID()+"' >" + aml + "</Item>";
+recentlyVisitedPreferences.loadAML(aml);
+
+return recentlyVisitedPreferences; ]]></method_code>
+  <method_type>C#</method_type>
+  <name>Get RecentlyVisited Preferences</name>
+ </Item>
+</AML>

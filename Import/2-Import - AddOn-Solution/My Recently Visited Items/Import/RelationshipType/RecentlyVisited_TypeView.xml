@@ -1,0 +1,153 @@
+﻿<AML>
+ <Item type="RelationshipType" id="44373EC278E94C9B94251339641ECA33" action="add" dependencyLevel="2">
+  <auto_search>1</auto_search>
+  <behavior>float</behavior>
+  <copy_permissions>0</copy_permissions>
+  <create_related>0</create_related>
+  <grid_view>intermix</grid_view>
+  <hide_in_all>0</hide_in_all>
+  <inc_rel_key_name>1</inc_rel_key_name>
+  <inc_related_key_name>1</inc_related_key_name>
+  <is_list_type>0</is_list_type>
+  <label xml:lang="en">ItemType Forms</label>
+  <new_show_related>0</new_show_related>
+  <related_id keyed_name="Form" type="ItemType" name="Form">47573682FB7549F59ADECD4BFE04F1DE</related_id>
+  <related_notnull>1</related_notnull>
+  <related_option>0</related_option>
+  <relationship_id keyed_name="RecentlyVisited_TypeView" type="ItemType" name="RecentlyVisited_TypeView">
+   <Item type="ItemType" id="9AA35B15E2D74A43BBB480AB1551897E" action="add">
+    <allow_private_permission>1</allow_private_permission>
+    <auto_search>0</auto_search>
+    <enforce_discovery>0</enforce_discovery>
+    <hide_where_used>0</hide_where_used>
+    <implementation_type>table</implementation_type>
+    <instance_data>RECENTLYVISITED_TYPEVIEW</instance_data>
+    <is_dependent>0</is_dependent>
+    <is_relationship>1</is_relationship>
+    <is_versionable>0</is_versionable>
+    <revisions keyed_name="Default" type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
+    <show_parameters_tab>1</show_parameters_tab>
+    <structure_view>tabs off</structure_view>
+    <unlock_on_logout>0</unlock_on_logout>
+    <use_src_access>1</use_src_access>
+    <name>RecentlyVisited_TypeView</name>
+    <Relationships>
+     <Item type="Property" id="C1226CB1C29C4A8AA0F54E0C9B9A3386" action="add">
+      <column_alignment>left</column_alignment>
+      <data_source>
+       <Item type="Property" action="get" select="id">
+        <name>related_id</name>
+        <source_id>9AA35B15E2D74A43BBB480AB1551897E</source_id>
+       </Item>
+      </data_source>
+      <data_type>foreign</data_type>
+      <foreign_property>
+       <Item type="Property" action="get" select="id">
+        <keyed_name>name</keyed_name>
+        <source_id>
+         <Item type="ItemType" action="get" select="id">
+          <name>Form</name>
+         </Item>
+        </source_id>
+       </Item>
+      </foreign_property>
+      <is_hidden>1</is_hidden>
+      <is_hidden2>1</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">form_name</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>3712</sort_order>
+      <source_id keyed_name="RecentlyVisited_TypeView" type="ItemType" name="RecentlyVisited_TypeView">9AA35B15E2D74A43BBB480AB1551897E</source_id>
+      <track_history>0</track_history>
+      <name>form_name</name>
+     </Item>
+     <Item type="Property" id="34657D9204B542AC87668C136E5CFF22" action="add">
+      <column_alignment>left</column_alignment>
+      <column_width>60</column_width>
+      <data_type>boolean</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">Disabled</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>8</sort_order>
+      <source_id keyed_name="RecentlyVisited_TypeView" type="ItemType" name="RecentlyVisited_TypeView">9AA35B15E2D74A43BBB480AB1551897E</source_id>
+      <track_history>0</track_history>
+      <name>is_disabled</name>
+     </Item>
+     <Item type="Server Event" id="926E1A2ABD15459B9589F3A692A4293C" action="add">
+      <event_version>version_1</event_version>
+      <is_required>0</is_required>
+      <related_id keyed_name="RecentlyVisited Set FormTracking" type="Method">
+       <Item type="Method" action="get" select="id">
+        <name>RecentlyVisited Set FormTracking</name>
+       </Item>
+      </related_id>
+      <server_event>onAfterAdd</server_event>
+      <sort_order>10</sort_order>
+      <source_id keyed_name="RecentlyVisited_TypeView" type="ItemType" name="RecentlyVisited_TypeView">9AA35B15E2D74A43BBB480AB1551897E</source_id>
+     </Item>
+     <Item type="Server Event" id="5A7D8420DB16437BB167BFF282CE8CC4" action="add">
+      <event_version>version_1</event_version>
+      <is_required>0</is_required>
+      <related_id keyed_name="RecentlyVisited Set FormTracking" type="Method">
+       <Item type="Method" action="get" select="id">
+        <name>RecentlyVisited Set FormTracking</name>
+       </Item>
+      </related_id>
+      <server_event>onAfterUpdate</server_event>
+      <sort_order>10</sort_order>
+      <source_id keyed_name="RecentlyVisited_TypeView" type="ItemType" name="RecentlyVisited_TypeView">9AA35B15E2D74A43BBB480AB1551897E</source_id>
+     </Item>
+     <Item type="Server Event" id="85FF2CB3C4EC400589B7C05AC3C53332" action="add">
+      <event_version>version_1</event_version>
+      <is_required>0</is_required>
+      <related_id keyed_name="RecentlyVisited Set FormTracking" type="Method">
+       <Item type="Method" action="get" select="id">
+        <name>RecentlyVisited Set FormTracking</name>
+       </Item>
+      </related_id>
+      <server_event>onBeforeDelete</server_event>
+      <sort_order>10</sort_order>
+      <source_id keyed_name="RecentlyVisited_TypeView" type="ItemType" name="RecentlyVisited_TypeView">9AA35B15E2D74A43BBB480AB1551897E</source_id>
+     </Item>
+    </Relationships>
+   </Item>
+  </relationship_id>
+  <sort_order>10</sort_order>
+  <source_id keyed_name="RecentlyVisited_ItemType" type="ItemType" name="RecentlyVisited_ItemType">E4F496D2C7AD40249E8A4E70415DC6D8</source_id>
+  <name>RecentlyVisited_TypeView</name>
+ </Item>
+ <Item type="ItemType" id="9AA35B15E2D74A43BBB480AB1551897E" action="edit">
+  <Relationships>
+   <Item type="Property" action="edit" where="source_id='9AA35B15E2D74A43BBB480AB1551897E' and name='sort_order'">
+    <column_alignment>left</column_alignment>
+    <column_width>40</column_width>
+    <data_type>integer</data_type>
+    <is_hidden>1</is_hidden>
+    <is_hidden2>0</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <label xml:lang="en">Pos</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>5</sort_order>
+    <source_id keyed_name="RecentlyVisited_TypeView" type="ItemType" name="RecentlyVisited_TypeView">9AA35B15E2D74A43BBB480AB1551897E</source_id>
+    <track_history>0</track_history>
+    <name>sort_order</name>
+   </Item>
+  </Relationships>
+ </Item>
+ <Item type="View" action="delete" where="source_id='9AA35B15E2D74A43BBB480AB1551897E'" />
+ <Item type="Form" action="delete" where="name='RecentlyVisited_TypeView'" />
+</AML>

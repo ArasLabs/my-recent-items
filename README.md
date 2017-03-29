@@ -16,6 +16,7 @@ This project and the following release notes have been migrated from the old Ara
 
 Release | Notes
 --------|--------
+[v3](https://github.com/ArasLabs/my-recent-items/releases/tag/v3) | Aras 11 and Aras 10SP4++. Solution Package and Documentation. It loads on top of the standard ARAS Solutions PE,PM without any conflicts. See Readme.txt for installation steps.
 [v2](https://github.com/ArasLabs/my-recent-items/releases/tag/v2) | Solution Package and Documentation. It loads on top of the standard ARAS Solutions PE,PM,QP without any conflicts.
 [v1](https://github.com/ArasLabs/my-recent-items/releases/tag/v1) | Solution Package and Documentation. It loads on top of the standard ARAS Solutions PE,PM,QP without any conflicts.
 
@@ -23,6 +24,7 @@ Release | Notes
 
 Project | Aras
 --------|------
+[v3](https://github.com/ArasLabs/my-recent-items/releases/tag/v3) | 10 SP4+, 11.0
 [v2](https://github.com/ArasLabs/my-recent-items/releases/tag/v2) | 10 - 10 SP3
 [v1](https://github.com/ArasLabs/my-recent-items/releases/tag/v1) | 9.3 SPx, 9.4 SPx
 
@@ -45,21 +47,20 @@ Project | Aras
   * _Note: You must login as root for the package import to succeed!_
 4. Enter the package name in the TargetRelease field.
   * Optional: Enter a description in the Description field.
-5. Enter the path to your local `..\my-recent-items\Import\0- Import - Common Utilities (v1-6 partial)\imports (admin).mf` file in the Manifest File field.
+5. Enter the path to your local `..\my-recent-items\Import\0-Delete - core Extensions (of prev Version)\imports (root).mf` file in the Manifest File field.
 6. Select **Common Utilities** in the Available for Import field.
 7. Select Type = **Merge** and Mode = **Thorough Mode**.
 8. Click **Import** in the top left corner.
 9. Repeat steps 5-8 for the following packages:
-  * `..\my-recent-items\Import\1- Import - core Extensions\1-import\imports (root).mf`
-  * `..\my-recent-items\Import\1- Import - core Extensions\2-import\imports (root).mf`
+  * `..\my-recent-items\Import\1-Common Grid Utilities v3-0 (partial)\imports (admin).mf`
   * `..\my-recent-items\Import\2- Import - AddOn-Solution\imports (admin).mf`
-  * `..\my-recent-items\Import\3- Import - Tracking on Part,Document,CAD etc\imports (admin).mf`
+  * `..\my-recent-items\Import\3-Configuration Data\imports (admin).mf`
   * Optional: `..\my-recent-items\Import\SetPackageVersion (optioal)\imports (admin).mf`
 10. Close the Aras Package Import tool.
 
 ## Usage
 
-See [My Recently Visited Items  - Add-On v1-3.pdf](./Documentation/My%20Recently%20Visited%20Items%20%20-%20Add-On%20v1-3.pdf) for more information on using this project.
+See [My Recently Visited Items  - Add-On v3-0.pdf](./Documentation/My%20Recently%20Visited%20Items%20%20-%20Add-On%20v3-0.pdf) for more information on using this project.
 
 ## Contributing
 

@@ -1,0 +1,66 @@
+﻿<AML>
+ <Item type="Method" id="E835E2E92C6D4687BEC4E8E65095AA8F" action="add">
+  <comments>called from onAfterUpdate on core ItemType</comments>
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[// called from RelationshipItem "RecentlyVisited_TypeView" on ServerEvent:  onAfterAdd, onAfterUpdate, onBeforeDelete
+  
+//System.Diagnostics.Debugger.Break();
+  bool isDisabled = (this.getProperty("is_disabled","0") == "1");
+  string thisAction = this.getAction();  // set if "delete", else ""
+
+  // get ID of Method
+  Item qryItem = getInnovator().getItemByKeyedName("Method","RecentlyVisited_AddToUsersList");
+  string AddToRecentlyVisitedMetodId = qryItem.getID();
+  
+  //add or remove Method from Form Events
+  string formId;
+  if (thisAction == "delete") {
+	qryItem = this.getInnovator().getItemById(this.getType(), this.getID());
+	qryItem = qryItem.getRelatedItem();
+	formId = qryItem.getID();
+	qryItem = deleteEventFromForm(formId, AddToRecentlyVisitedMetodId);
+	if (qryItem.isError()) {return qryItem;}
+  }
+  else {
+	formId = this.getProperty("related_id","");
+	qryItem = mergeEventToForm(formId, AddToRecentlyVisitedMetodId, isDisabled);
+	if (qryItem.isError()) {return qryItem;}
+}
+
+  return this;
+}
+
+//-----
+Item mergeEventToForm (string formId, string methodId, bool isDisabled) {
+ 	string whereStr= "[Form_Event].source_id='" + formId + "' and [Form_Event].related_id='" + methodId + "'";
+    
+    Item qryItem = this.newItem("Form Event","merge");
+    qryItem.setAttribute("where",whereStr);
+	
+	qryItem.setProperty("source_id",formId);
+    qryItem.setProperty("related_id",methodId);
+	if (isDisabled) {qryItem.setProperty("form_event","");}
+	else {qryItem.setProperty("form_event","onunload");}
+
+    qryItem = qryItem.apply();
+    if (qryItem.isError()) {return qryItem;}
+
+	return this;
+}
+
+//-----
+Item deleteEventFromForm (string formId, string methodId) {
+  	string whereStr= "[Form_Event].source_id='" + formId + "' and [Form_Event].related_id='" + methodId + "'";
+ 
+    Item qryItem = this.newItem("Form Event","delete");
+    qryItem.setAttribute("where",whereStr);
+	
+    qryItem = qryItem.apply();
+    if (qryItem.isError()) {return qryItem;}
+
+	return this;
+	]]></method_code>
+  <method_type>C#</method_type>
+  <name>RecentlyVisited Set FormTracking</name>
+ </Item>
+</AML>

@@ -1,0 +1,148 @@
+﻿<AML>
+ <Item type="RelationshipType" id="F9189F2844F94C2EAAA3D4722253DFBC" action="add" dependencyLevel="1">
+  <auto_search>1</auto_search>
+  <behavior>float</behavior>
+  <copy_permissions>0</copy_permissions>
+  <create_related>0</create_related>
+  <grid_view>intermix</grid_view>
+  <hide_in_all>0</hide_in_all>
+  <inc_rel_key_name>1</inc_rel_key_name>
+  <inc_related_key_name>1</inc_related_key_name>
+  <is_list_type>0</is_list_type>
+  <label xml:lang="en">Track by Type and Form</label>
+  <new_show_related>0</new_show_related>
+  <related_id keyed_name="ItemType" type="ItemType" name="ItemType">450906E86E304F55A34B3C0D65C097EA</related_id>
+  <related_notnull>1</related_notnull>
+  <related_option>0</related_option>
+  <relationship_id keyed_name="RecentlyVisited_ItemType" type="ItemType" name="RecentlyVisited_ItemType">
+   <Item type="ItemType" id="E4F496D2C7AD40249E8A4E70415DC6D8" action="add">
+    <allow_private_permission>1</allow_private_permission>
+    <auto_search>0</auto_search>
+    <enforce_discovery>0</enforce_discovery>
+    <hide_where_used>0</hide_where_used>
+    <implementation_type>table</implementation_type>
+    <instance_data>RECENTLYVISITED_ITEMTYPE</instance_data>
+    <is_dependent>0</is_dependent>
+    <is_relationship>1</is_relationship>
+    <is_versionable>0</is_versionable>
+    <revisions keyed_name="Default" type="Revision">7FE395DD8B9F4E1090756A34B733D75E</revisions>
+    <show_parameters_tab>1</show_parameters_tab>
+    <structure_view>tabs on</structure_view>
+    <unlock_on_logout>0</unlock_on_logout>
+    <use_src_access>1</use_src_access>
+    <name>RecentlyVisited_ItemType</name>
+    <Relationships>
+     <Item type="Property" id="A41FB153F11C463E8090EC39096A8393" action="add">
+      <column_alignment>left</column_alignment>
+      <column_width>300</column_width>
+      <data_source keyed_name="RecentlyVisited Menu">2310798D3FF54EB58AC9D18A80DCE80C</data_source>
+      <data_type>mv_list</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">Context Menu</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>30</sort_order>
+      <source_id keyed_name="RecentlyVisited_ItemType" type="ItemType" name="RecentlyVisited_ItemType">E4F496D2C7AD40249E8A4E70415DC6D8</source_id>
+      <stored_length>512</stored_length>
+      <track_history>0</track_history>
+      <name>allowed_context_menu</name>
+     </Item>
+     <Item type="Property" id="C2683751B2F347BB91FDA979ACCF4DEE" action="add">
+      <column_alignment>left</column_alignment>
+      <column_width>60</column_width>
+      <data_type>boolean</data_type>
+      <is_hidden>0</is_hidden>
+      <is_hidden2>0</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">Disabled</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>8</sort_order>
+      <source_id keyed_name="RecentlyVisited_ItemType" type="ItemType" name="RecentlyVisited_ItemType">E4F496D2C7AD40249E8A4E70415DC6D8</source_id>
+      <track_history>0</track_history>
+      <name>is_disabled</name>
+     </Item>
+     <Item type="Property" id="446F3FDE36DA4B82B7ABEF1CE19DFB4E" action="add">
+      <column_alignment>left</column_alignment>
+      <data_source>
+       <Item type="Property" action="get" select="id">
+        <name>related_id</name>
+        <source_id>E4F496D2C7AD40249E8A4E70415DC6D8</source_id>
+       </Item>
+      </data_source>
+      <data_type>foreign</data_type>
+      <foreign_property>
+       <Item type="Property" action="get" select="id">
+        <keyed_name>name</keyed_name>
+        <source_id>
+         <Item type="ItemType" action="get" select="id">
+          <name>ItemType</name>
+         </Item>
+        </source_id>
+       </Item>
+      </foreign_property>
+      <is_hidden>1</is_hidden>
+      <is_hidden2>1</is_hidden2>
+      <is_indexed>0</is_indexed>
+      <is_keyed>0</is_keyed>
+      <is_multi_valued>0</is_multi_valued>
+      <is_required>0</is_required>
+      <label xml:lang="en">item_type_name</label>
+      <range_inclusive>0</range_inclusive>
+      <readonly>0</readonly>
+      <sort_order>3584</sort_order>
+      <source_id keyed_name="RecentlyVisited_ItemType" type="ItemType" name="RecentlyVisited_ItemType">E4F496D2C7AD40249E8A4E70415DC6D8</source_id>
+      <track_history>0</track_history>
+      <name>item_type_name</name>
+     </Item>
+     <Item type="View" id="3460C256F2E844C1A61BC9126B24D465" action="add">
+      <client>js</client>
+      <related_id keyed_name="RecentlyVisited_ItemType" type="Form">77D3A90F09804085865C513A5A1A2B73</related_id>
+      <role keyed_name="World" type="Identity">
+       <Item type="Identity" action="get" select="id">
+        <name>World</name>
+       </Item>
+      </role>
+      <show_ssvc>0</show_ssvc>
+      <sort_order>128</sort_order>
+      <source_id keyed_name="RecentlyVisited_ItemType" type="ItemType" name="RecentlyVisited_ItemType">E4F496D2C7AD40249E8A4E70415DC6D8</source_id>
+      <type>default</type>
+     </Item>
+    </Relationships>
+   </Item>
+  </relationship_id>
+  <sort_order>128</sort_order>
+  <source_id keyed_name="RecentlyVisited_Preferences" type="ItemType" name="RecentlyVisited_Preferences">385A67FCACAC4B4EB18E74386DF8CEC8</source_id>
+  <name>RecentlyVisited_ItemType</name>
+ </Item>
+ <Item type="ItemType" id="E4F496D2C7AD40249E8A4E70415DC6D8" action="edit">
+  <Relationships>
+   <Item type="Property" action="edit" where="source_id='E4F496D2C7AD40249E8A4E70415DC6D8' and name='sort_order'">
+    <column_alignment>left</column_alignment>
+    <column_width>40</column_width>
+    <data_type>integer</data_type>
+    <is_hidden>1</is_hidden>
+    <is_hidden2>0</is_hidden2>
+    <is_indexed>0</is_indexed>
+    <is_keyed>0</is_keyed>
+    <is_multi_valued>0</is_multi_valued>
+    <is_required>0</is_required>
+    <label xml:lang="en">Pos</label>
+    <range_inclusive>0</range_inclusive>
+    <readonly>0</readonly>
+    <sort_order>5</sort_order>
+    <source_id keyed_name="RecentlyVisited_ItemType" type="ItemType" name="RecentlyVisited_ItemType">E4F496D2C7AD40249E8A4E70415DC6D8</source_id>
+    <track_history>0</track_history>
+    <name>sort_order</name>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

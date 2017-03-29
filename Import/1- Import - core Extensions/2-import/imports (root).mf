@@ -1,3 +1,0 @@
-<imports>
-  <package name="com.aras.innovator.core" path=".\" />
-</imports>

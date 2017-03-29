@@ -1,0 +1,51 @@
+﻿<AML>
+ <Item type="Method" id="0693531B3A1D4A728B8C44125AEECA5D" action="add">
+  <comments>Clean up users's recorded entries that go deleted. </comments>
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[// Generic method: RecentlyVisited DelStaleEntries
+// Trigger: Called from other methods
+// uses SQL for speed - permissions are irrelevant
+
+//System.Diagnostics.Debugger.Break();
+
+string userId = this.getInnovator().getUserID();
+string rvtn = "[User_Recently_Visited_Item]";
+string SQLstr;
+Innovator inn = this.getInnovator();
+
+// get ItemTypes recorded in recently visited list
+SQLstr = "SELECT DISTINCT "+rvtn+".item_type FROM "+rvtn;
+SQLstr += " WHERE "+rvtn+".source_id='"+userId+"'";
+
+Item qry = inn.applySQL(SQLstr);
+List<string> itemTypesList = new List<string>();
+for (int i=0; i<qry.getItemCount(); i++) {
+	itemTypesList.Add(qry.getItemByIndex(i).getProperty("item_type",""));
+}
+
+// remove stale entries by item type
+for (int t=0; t<itemTypesList.Count; t++) {
+	string it = itemTypesList[t];
+	string ittn = it.Replace(" ","_");
+	
+	SQLstr = "SELECT DISTINCT "+rvtn+".item_id_string FROM "+rvtn;
+	SQLstr += " WHERE "+rvtn+".item_type='"+it+"' and "+rvtn+".item_id_string not in (SELECT "+ittn+".id FROM "+ittn+")";
+	SQLstr += " and "+rvtn+".source_id='"+userId+"'";
+	qry = inn.applySQL(SQLstr);
+	
+	List<string> itemIdsList = new List<string>();
+	int deleteCount = qry.getItemCount();
+	for (int i=0; i<deleteCount; i++) {itemIdsList.Add(qry.getItemByIndex(i).getProperty("item_id_string",""));}
+	
+	if (deleteCount >0) {
+		SQLstr = "DELETE FROM "+rvtn+" WHERE "+rvtn+".item_id_string in ('"+string.Join("','",itemIdsList)+"')";
+		SQLstr += " and "+rvtn+".source_id='"+userId+"'";
+		qry = inn.applySQL(SQLstr);
+	}
+}
+
+return this;]]></method_code>
+  <method_type>C#</method_type>
+  <name>RecentlyVisited DelStaleEntries</name>
+ </Item>
+</AML>

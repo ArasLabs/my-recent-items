@@ -1,0 +1,44 @@
+﻿<AML>
+ <Item type="List" id="2310798D3FF54EB58AC9D18A80DCE80C" action="add">
+  <description>values starting with # will be executed as "item Action" of the same name.</description>
+  <name>RecentlyVisited Menu</name>
+  <Relationships>
+   <Item type="Value" id="D4A9A4ED04E74F9982582C00D5CCB6A4" action="add">
+    <label xml:lang="en">Lock</label>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="RecentlyVisited Menu" type="List">2310798D3FF54EB58AC9D18A80DCE80C</source_id>
+    <value>lock</value>
+   </Item>
+   <Item type="Value" id="FF1D5656EC654DF994EA86EF676D88F7" action="add">
+    <label xml:lang="en">Unlock</label>
+    <sort_order>256</sort_order>
+    <source_id keyed_name="RecentlyVisited Menu" type="List">2310798D3FF54EB58AC9D18A80DCE80C</source_id>
+    <value>unlock</value>
+   </Item>
+   <Item type="Value" id="16F4B571284D462CA67F18D0189151DA" action="add">
+    <label xml:lang="en">View Item</label>
+    <sort_order>384</sort_order>
+    <source_id keyed_name="RecentlyVisited Menu" type="List">2310798D3FF54EB58AC9D18A80DCE80C</source_id>
+    <value>view_item</value>
+   </Item>
+   <Item type="Value" id="8156D821C6AB49BCA6086B67EBF5C21D" action="add">
+    <label xml:lang="en">Where Used</label>
+    <sort_order>512</sort_order>
+    <source_id keyed_name="RecentlyVisited Menu" type="List">2310798D3FF54EB58AC9D18A80DCE80C</source_id>
+    <value>where_used</value>
+   </Item>
+   <Item type="Value" id="8660BE0E64854171BA6985793C1F116F" action="add">
+    <label xml:lang="en">Structure Browser</label>
+    <sort_order>640</sort_order>
+    <source_id keyed_name="RecentlyVisited Menu" type="List">2310798D3FF54EB58AC9D18A80DCE80C</source_id>
+    <value>structure_browser</value>
+   </Item>
+   <Item type="Value" id="8C3D0361866C4AA6A3C63A6F91E77A03" action="add">
+    <label xml:lang="en">Add to Change</label>
+    <sort_order>768</sort_order>
+    <source_id keyed_name="RecentlyVisited Menu" type="List">2310798D3FF54EB58AC9D18A80DCE80C</source_id>
+    <value>#PE_AddToChange</value>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

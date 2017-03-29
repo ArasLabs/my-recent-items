@@ -1,0 +1,84 @@
+﻿<AML>
+ <Item type="Form" id="77D3A90F09804085865C513A5A1A2B73" action="add">
+  <category_form>0</category_form>
+  <height>150</height>
+  <stylesheet><![CDATA[../styles/default.css]]></stylesheet>
+  <width>1000</width>
+  <name>RecentlyVisited_ItemType</name>
+  <Relationships>
+   <Item type="Body" id="CDA68C079A2A4596B10E14D55FC2DC00" action="add">
+    <sort_order>128</sort_order>
+    <source_id keyed_name="RecentlyVisited_ItemType" type="Form">77D3A90F09804085865C513A5A1A2B73</source_id>
+    <Relationships>
+     <Item type="Field" id="0CB5A713261F4E7696AD72E6770E552A" action="add">
+      <border_width>0</border_width>
+      <display_length_unit>px</display_length_unit>
+      <field_type>checkbox list</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">ItemType Context Menu</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <propertytype_id keyed_name="allowed_context_menu" type="Property">A41FB153F11C463E8090EC39096A8393</propertytype_id>
+      <sort_order>384</sort_order>
+      <source_id keyed_name="CDA68C079A2A4596B10E14D55FC2DC00" type="Body">CDA68C079A2A4596B10E14D55FC2DC00</source_id>
+      <tab_index>30</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>20</x>
+      <y>55</y>
+      <name>allowed_context_menu</name>
+     </Item>
+     <Item type="Field" id="D1289834CD114FF3809D197065ECA1BC" action="add">
+      <border_width>0</border_width>
+      <display_length_unit>px</display_length_unit>
+      <field_type>checkbox</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">Disabled</label>
+      <label_position>right</label_position>
+      <list_no_blank>0</list_no_blank>
+      <propertytype_id keyed_name="is_disabled" type="Property">C2683751B2F347BB91FDA979ACCF4DEE</propertytype_id>
+      <sort_order>256</sort_order>
+      <source_id keyed_name="CDA68C079A2A4596B10E14D55FC2DC00" type="Body">CDA68C079A2A4596B10E14D55FC2DC00</source_id>
+      <tab_index>8</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>265</x>
+      <y>25</y>
+      <name>is_disabled</name>
+     </Item>
+     <Item type="Field" id="91FDD5F8EB2A4ACDA380BD396AA5CC90" action="add">
+      <border_width>0</border_width>
+      <display_length>20</display_length>
+      <display_length_unit>em</display_length_unit>
+      <field_type>text</field_type>
+      <font_color>#000000</font_color>
+      <font_family>tahoma, arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">ItemType</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <propertytype_id keyed_name="item_type_name" type="Property">446F3FDE36DA4B82B7ABEF1CE19DFB4E</propertytype_id>
+      <sort_order>128</sort_order>
+      <source_id keyed_name="CDA68C079A2A4596B10E14D55FC2DC00" type="Body">CDA68C079A2A4596B10E14D55FC2DC00</source_id>
+      <tab_index>3584</tab_index>
+      <tab_stop>1</tab_stop>
+      <x>20</x>
+      <y>10</y>
+      <name>item_type_name</name>
+     </Item>
+    </Relationships>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

@@ -1,0 +1,368 @@
+﻿<AML>
+ <Item type="Method" id="DA7DB1FF385C449E91EDFDC4ECC77EEC" action="add">
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[// global variable "innovator"  must be declared in grid's html field on the form !!!
+// global variable "I18Ncntx"   must be declared in grid's html field on the form !!!
+
+//include functions from code tree
+var includeScript = document.createElement('script');
+includeScript.src = "../javascript/include.aspx?classes=Dependencies";   // allows to call standard where-used & structure browser
+document.head.appendChild(includeScript);
+
+window.initTreeGrid1 = function(gridElementId) {
+    var arasRelease="Aras10";
+	top.gridElementId = gridElementId;
+
+	top.recentlyVisitedGridHandler = new RecentlyVisitedGrid(arasRelease);
+};
+
+window.ReloadMyList = function() {
+  // refresh Grid
+  top.recentlyVisitedGridHandler.gridRefresh();
+};
+
+window.ClearMyList = function() {
+  // caller server method to do the job.
+  if (!confirm("Continue clearing My Recently vistited list ?")) {return;}
+  var itm = top.aras.newIOMItem("User Recently Visited Item","");
+  var userId = top.aras.getUserID();
+
+  itm.setAttribute("userID",userId);
+  itm = itm.apply("RecentlyVisited_sClearUsersList");
+  
+  if (itm.isError()) {top.aras.AlertError(itm.getErrorString());return;}
+  
+  // refresh Grid
+  top.recentlyVisitedGridHandler.gridRefresh();
+};
+
+RecentlyVisitedGrid = function RecentlyVisitedGridFunc(arasRelease) {
+  this.arasRelease = arasRelease;
+  this.initialized = false;
+
+  this.initialize();
+};
+
+RecentlyVisitedGrid.prototype = new BaseGrid();
+
+RecentlyVisitedGrid.prototype.initialize = function RecentlyVisitedGrid_Initialize() {
+	//read grid columns config from user preferences
+	var userPrefs = top.aras.newIOMItem("Method","Get RecentlyVisited Preferences");
+	userPrefs = userPrefs.apply();
+
+	var propVal = userPrefs.getProperty("base_column_headings","");
+	if (propVal === "") {top.aras.AlertError("User Preferences for 'Recently Visited' not set ! - See your System Administrator."); return;}
+	var columHeadings = propVal.split(",");
+	propVal = userPrefs.getProperty("base_column_widths","");
+	var columWidths = propVal.split(",");
+	propVal = userPrefs.getProperty("base_column_alignments","");
+	var columAlignments = propVal.split(",");
+	this.gridVisibleColumns = [];
+	var colName;
+	for(var columnIndex = 0; columnIndex < columHeadings.length; columnIndex++) {
+		 colName = "COL_"+columnIndex;
+		 this.gridVisibleColumns[columnIndex] = {};
+		 this.gridVisibleColumns[columnIndex].Name = colName;
+		 this.gridVisibleColumns[columnIndex].Title = columHeadings[columnIndex];
+		 this.gridVisibleColumns[columnIndex].Width = columWidths[columnIndex];
+		 this.gridVisibleColumns[columnIndex].Align = columAlignments[columnIndex];
+	}
+	this.userPreferences = userPrefs;
+
+  var xml = '';
+	xml += '<table font="' + "Microsoft Sans Serif-8" + '" ';
+	xml += 'backgroundColor="white" sel_bgColor="steelbue" sel_TextColor="white" delim ="|" editable="false" ' +
+	' draw_grid="true" multiselect="false" enableHtml="false" bgInvert="true" column_draggable="false" >';
+
+	xml += '<thead>';
+	for(columnIndex = 0; columnIndex < this.gridVisibleColumns.length; columnIndex++) {
+	  xml += ' <th align="c">' + this.gridVisibleColumns[columnIndex].Title + '</th>';
+	}
+	xml += '';
+	xml += '</thead>';
+
+	xml += '<columns>';
+	for(columnIndex = 0; columnIndex < this.gridVisibleColumns.length; columnIndex++) {
+		xml += ' <column width="' + this.gridVisibleColumns[columnIndex].Width + '" align="' + this.gridVisibleColumns[columnIndex].Align + '" edit="noedit"' + 
+				' order="' + columnIndex + '" colname="' + this.gridVisibleColumns[columnIndex].Name + '" />';
+	}	
+	xml += '';
+	xml += '</columns>';
+
+	xml += '<menu>';
+	xml += '<emptytag/>';
+	xml += '</menu>';
+	xml += '</table>';
+
+	this.columnPropertyMappings = fn_getResultsGridTableDataColumnDef();
+	this.lockIconColumnNo = 0;
+	this.icons = [];
+	this.icons["locked"] = 		"../images/LockedByMe.svg";
+	this.icons["locked_else"] = "../images/LockedByOthers.svg";
+
+//	this.use_svg_icons = true;
+//	fn_initDefaultIcons(this);
+	
+    //tree grid
+    this.grid = this.loadFlatGridIntoHtmlElement(top.gridElementId);  // pass the id of the html element on this form
+	this.grid.InitXML(xml);
+    this.initialized = true;
+	this.gridRefresh();
+};
+
+RecentlyVisitedGrid.prototype.gridRefresh = function RecentlyVisitedGrid_gridRefresh(isReLoad) {
+    var self = this;
+	if (self.hasToolbar) {self.enableToolbar(false);}
+    self.grid.setPaintEnabled(false);
+
+    document.getElementById(this.grid.connectId).style.visibility = 'hidden';
+
+    setTimeout(function () {
+        try {
+            self.Draw(isReLoad);
+        } finally {
+            document.getElementById(self.grid.connectId).style.visibility = 'visible';
+			if (self.hasToolbar) {self.enableToolbar(true);}
+            self.grid.setPaintEnabled(true);
+        }
+    }, 0);
+};
+
+// ======= Draw Search grid contents =======
+RecentlyVisitedGrid.prototype.Draw = function RecentlyVisitedGrid_Draw() {
+// itemIds = comma separated list of item ids
+// selectProperties = comma separated list of property names
+
+	this.grid.removeAllRows();
+	this.clearGridRowUserData(); //clear gridUserData of all registered rows
+	this.defaultMenu = this.initDefaultMenu();	
+
+	var userId = top.aras.getUserID();
+
+	//## move this to server side in future !!! - use SQL for speed - keep logic to detect deleted items and remove from all user's recently lists
+	var amlQuery = "<Item type='User Recently Visited Item' action='get' select='source_id,insert_date,sort_order,insert_date,item_id_string,item_config_id_string,item_type,item_generation' orderBy='insert_date DESC'>";
+	amlQuery += "<source_id>"+userId+"</source_id>";
+	amlQuery += "</Item>";
+	
+	amlQueryItem = new Item("","");
+	amlQueryItem.loadAML(amlQuery);
+	amlQueryItem = amlQueryItem.apply();
+
+    var rowConfig = {};
+    rowConfig.rowIcon = "";
+    rowConfig.rowBgColor = "";
+
+    rowConfig.columnMapping = this.columnPropertyMappings;
+	
+	var recentlyVisitedItem = top.aras.newIOMItem("");
+	var itmSelectProperties = "keyed_name,state,major_rev,generation,locked_by_id,classification";
+	
+	for (var i = 0; i < amlQueryItem.getItemCount(); i++) {
+		var recentlyVisitedIndex = amlQueryItem.getItemByIndex(i);
+		var itmType = recentlyVisitedIndex.getProperty("item_type","");
+		//fn_GetSmallIconFormatOfItemType(itmType);
+		
+		recentlyVisitedItem.loadAML("<Item type='"+itmType+"' action='get' select='"+itmSelectProperties+"' serverEvents='0' id='"+recentlyVisitedIndex.getProperty("item_id_string","")+"' />");
+		
+		var itmNode = recentlyVisitedItem.apply();
+		if (!itmNode.IsError()) {
+			//itmNode.setProperty("item_type",itmType);
+			this.DrawFlatGridRow(itmNode, rowConfig, recentlyVisitedIndex.getID());
+		}
+	}
+ 
+};
+
+//-----------  BEGIN Grid's custom grid handlers
+RecentlyVisitedGrid.prototype.initDefaultMenu = function RecentlyVisitedGrid_initDefaultMenu() {
+	var defaultMenu = [];
+	
+	var menuList = top.aras.newIOMItem("");
+	menuList.loadAML('<Item type="Value" action="get" orderBy="sort_order" ><source_id>2310798D3FF54EB58AC9D18A80DCE80C</source_id></Item>');
+	menuList = menuList.apply();
+	
+	for (var i=0; i<menuList.getItemCount();i++) {
+		defaultMenu.push({name: menuList.getItemByIndex(i).getProperty("value",""), label: menuList.getItemByIndex(i).getProperty("label","")});
+	}
+	
+	return defaultMenu;
+};
+
+RecentlyVisitedGrid.prototype.onGridMenuInit = function RecentlyVisitedGrid_onGridMenuInit(eArg) {
+	var allowedMenuActions = "view_item";  // default
+	var selectedId = this.grid.getSelectedId(); //selected grid row
+
+	var rowItemType = this.getGridRowUserData(eArg.rowId,"rowItemType");
+	var ItemTypeMenuDefs = this.userPreferences.getItemsByXPath("//Item[@type='RecentlyVisited_ItemType' and item_type_name='"+rowItemType+"']");
+	for (var i=0; i<ItemTypeMenuDefs.getItemCount();i++) {
+		var allowMenu = ItemTypeMenuDefs.getItemByIndex(i).getProperty("allowed_context_menu","");
+		if (allowMenu !== "") {
+			if (i===0) {
+				allowedMenuActions = allowMenu;
+			}
+			else {
+				allowedMenuActions += "," + ItemTypeMenuDefs.getItemCount;
+			}
+		}
+	}
+	
+	//filter default menu down to allowed actions
+	var menuIndex =0;
+	var rowItem = top.aras.newIOMItem(rowItemType,"get");
+	rowItem.setID(rowItemId = this.getGridRowUserData(eArg.rowId,"rowItemID"));
+	rowItem.setAttribute("select","locked_by_id");
+	rowItem = rowItem.apply();
+
+	var lockStatus = rowItem.getLockStatus();
+	for (i = 0; i < this.defaultMenu.length; i++) {
+		var skipAction = false;
+		if (this.defaultMenu[i].name === "lock" || this.defaultMenu[i].name === "unlock") {
+			if (this.defaultMenu[i].name === "lock" && lockStatus > 0) {
+				skipAction = true;
+			}
+			if (this.defaultMenu[i].name === "unlock" && (lockStatus === 0 || lockStatus > 1)) {
+				skipAction = true;
+			}
+		}
+		if (!skipAction) {
+		if (!this.defaultMenu[i].separator) {
+			if (allowedMenuActions.indexOf(this.defaultMenu[i].name) >=0) {
+				eArg.menuItems.push({
+					name: this.defaultMenu[i].name,
+					label: this.defaultMenu[i].label,
+					enabled: true
+				});
+				this.defaultMenu[i].menuIndex = menuIndex++;
+			}
+			else {
+				this.defaultMenu[i].menuIndex = -1;
+			}
+		} else {
+			eArg.menuItems.push(this.defaultMenu[i]);
+			this.defaultMenu[i].menuIndex = -1;
+		}
+		}
+		else {
+			this.defaultMenu[i].menuIndex = -1;
+		}
+	}
+	return true;
+};
+
+RecentlyVisitedGrid.prototype.onGridMenuClick = function RecentlyVisitedGrid_onGridMenuClick(menuChoice) {
+	var menuItem = null;
+
+	for (var i = 0; i < this.defaultMenu.length && !menuItem; i++) {
+		if (this.defaultMenu[i].menuIndex === menuChoice ) {
+			menuItem = this.defaultMenu[i];
+		}  
+	}
+	if (!menuItem) {return;}
+	
+	// call local menu action handler
+	var selectedId = this.grid.getSelectedId(); //selected grid row
+
+    var eRowArgs = {};
+	eRowArgs.rowItemId = this.getGridRowUserData(selectedId,"rowItemID");
+	eRowArgs.rowItemType = this.getGridRowUserData(selectedId,"rowItemType");
+	eRowArgs.rowId = selectedId;
+	eRowArgs.gridHandler = this;
+
+	fn_onResultsGridMenuClickAction(menuItem.name, eRowArgs);
+};
+
+RecentlyVisitedGrid.prototype.onGridClick = function RecentlyVisitedGrid_onGridClick(eArg) {
+	if (!this.initialized) {return;}
+};
+
+RecentlyVisitedGrid.prototype.onGridDoubleClick = function RecentlyVisitedGrid_onGridDoubleClick(eArg) {
+  var rowItemType = this.getGridRowUserData(eArg.rowId,"rowItemType");
+  var rowItemId = this.getGridRowUserData(eArg.rowId,"rowItemID");
+  top.aras.uiShowItem(rowItemType, rowItemId);
+};
+
+RecentlyVisitedGrid.prototype.onGridLinkClick = function RecentlyVisitedGrid_onGridLinkClick(eArg) {
+    // parse data in linkData
+	var linkInfo = eArg.linkData.split("~"); //0=rowId, 1=colIndex, 2=linkAction+Elements
+	var selectedId = linkInfo[0];
+	var col = linkInfo[1];
+	var cellVal = this.gridGetCellValue(selectedId,col);
+  	var linkActionElements = linkInfo[2].split("+");  //0=key, 1=itemType, 2=propName, 3=propValue
+	var linkActionKey = linkActionElements[0];
+	var itemType;
+
+	switch (linkActionKey) {
+		case "{OpenRowItem}":
+			itemType = this.getGridRowUserData(selectedId,"rowItemType");
+			var rowItemId = this.getGridRowUserData(selectedId,"rowItemID");
+			top.aras.uiShowItem(itemType, rowItemId);
+			break;
+	}
+};
+
+//------ BEGIN: local action handlers for menu or toolbar clicks
+fn_onResultsGridMenuClickAction = function (actionId, eRowArgs) {
+    if (actionId.indexOf("#") === 0) {
+		actionId = actionId.substring(1,actionId.length);
+		// execute this action on row item
+		fn_executeConfiguredMenuAction (actionId, eRowArgs);
+		return;
+	}
+   var res;
+	switch(actionId)
+	{
+	  case "lock":
+		 res = fn_LockThisItem (eRowArgs.rowItemType, eRowArgs.rowItemId);
+		 if (res.isError()) {top.aras.AlertError(res.getErrorString()); return;}
+		 eRowArgs.gridHandler.gridSetCellValue(eRowArgs.rowId,0,fn_GetLockedCellIconFormatByStatusCode(eRowArgs.gridHandler.icons,1));
+	  	 break;
+	  case "unlock":
+		 res = fn_UnLockThisItem (eRowArgs.rowItemType, eRowArgs.rowItemId);
+		 if (res.isError()) {top.aras.AlertError(res.getErrorString()); return;}
+		 eRowArgs.gridHandler.gridSetCellValue(eRowArgs.rowId,0,fn_GetLockedCellIconFormatByStatusCode(eRowArgs.gridHandler.icons,0));
+	  	 break;
+	  case "view_item":
+		 top.aras.uiShowItem(eRowArgs.rowItemType, eRowArgs.rowItemId);
+	  	 break;
+	  case "where_used":
+	     Dependencies.View(eRowArgs.rowItemType, eRowArgs.rowItemId, true); // true = where used
+	  	 break;
+	  case "structure_browser":
+	     Dependencies.View(eRowArgs.rowItemType, eRowArgs.rowItemId, false); // true = where used
+	  	 break;
+	 }
+	return;
+};
+
+//-----------  END Grid's custom grid handlers
+
+// =======  Definition of grid header and columns layout =======
+fn_getResultsGridTableDataColumnDef = function () {
+  // COLUMN VALUE PARAMETERS ARE:
+	// Class: optional - if missing "DefaultCellClass" will be used. Listed class can overwrite default cell functions,like UI formatting,if used.
+	// PropItemType: optional
+	// PropName: required, if Class is missing.
+	// isRelProp: set to "false", if property value can be retrieved from item; set to "true", if property value can be retrieved from relationship  (if missing, it is set to "false")
+	// CellBg: optional - set to a valid color value (i.e. "#ff0000") - if set to keyword "{propCSS}", the background color set in property's CSS will be used.
+	// CellStaticValue: optional - if set to a text, it this text will be displayed instead of the property's value 
+	// CellLinkKey: optional, CellLinkItemType must be set. 	if set to keyword {OpenRowItem}, the registered type and id of the row will be opened.
+    //															if set to keyword {FilesOfRelatedItem}, the files attached to rowItem (i.e. Document will be shown (more rules TBD)
+	// isEditable: optional (default= false), set to "true" to allow edits (grid must be set to editable, as well)
+
+    // Index must match a columnName of HeadingsAndLayout !!! 
+	var columnList = [];
+	columnList["COL_0"] =	{PropName: "locked_by_id",	CellValueType: "lock"};
+	columnList["COL_1"] =	{CellValueType: "row_icon"};	
+	columnList["COL_2"] =	{PropName: "keyed_name",		CellLinkKey:"{OpenRowItem}"};
+	columnList["COL_3"] =	{PropName: "major_rev"};
+	columnList["COL_4"] =	{PropName: "generation"};
+	columnList["COL_5"] =	{PropName: "classification", CellValueType: "class_leaf" };
+	columnList["COL_6"] =	{PropName: "state",			CellBg: "{propCSS}"};
+
+	return columnList;
+};
+]]></method_code>
+  <method_type>JavaScript</method_type>
+  <name>Recently Visited Grid Handler</name>
+ </Item>
+</AML>

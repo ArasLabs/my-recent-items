@@ -1,6 +1,6 @@
 <AML>
   <Item type="PackageDefinition" action="updatePackageDefinitionVersion" where="PackageDefinition.state='Released'" >
     <name>My Recently Visited Items</name>
-    <minor_rev>v2(A10)</minor_rev>
+    <minor_rev>v3(A11)</minor_rev>
   </Item>
 </AML>

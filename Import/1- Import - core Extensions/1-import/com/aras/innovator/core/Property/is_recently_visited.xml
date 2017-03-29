@@ -1,0 +1,20 @@
+﻿<AML>
+ <Item type="Property" id="841E197118164FADA6342E6D84ED2D9B" action="add">
+  <column_alignment>center</column_alignment>
+  <column_width>60</column_width>
+  <data_type>boolean</data_type>
+  <is_hidden>0</is_hidden>
+  <is_hidden2>1</is_hidden2>
+  <is_indexed>0</is_indexed>
+  <is_keyed>0</is_keyed>
+  <is_multi_valued>0</is_multi_valued>
+  <is_required>0</is_required>
+  <label xml:lang="en">Recently Visited</label>
+  <name>is_recently_visited</name>
+  <range_inclusive>0</range_inclusive>
+  <readonly>0</readonly>
+  <sort_order>10000</sort_order>
+  <source_id keyed_name="ItemType" type="ItemType" name="ItemType">450906E86E304F55A34B3C0D65C097EA</source_id>
+  <track_history>0</track_history>
+ </Item>
+</AML>

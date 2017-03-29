@@ -1,0 +1,110 @@
+﻿<AML>
+ <Item type="Method" id="96602A3744B046F68C2860EEF8586B35" action="add">
+  <comments>called from Form Event</comments>
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[' Generic method: RecentlyVisited_sAddToUsersList
+'
+' Trigger: Called from client-side method
+'
+'
+'MethodTemplateName=VBMain;
+Dim inn As Innovator = Me.getInnovator()
+Dim aml_cmd As Item
+
+Function Main() As Item
+  'System.Diagnostics.Debugger.Break()
+
+  Dim thisId As String = Me.getID()
+  Dim thisType As String = Me.GetType()
+
+  If thisId = "" Or thisType ="" Then
+    Return Me
+  End If
+
+  Dim userId As String = inn.getUserID()
+  
+  'get this Item with relevant data
+  Dim selectProps As String = "id,config_id,current_state,classification,generation,major_rev,keyed_name"
+  
+  aml_cmd = Me.newItem(thisType, "get")
+  aml_cmd.setId(thisId)
+  aml_cmd.setAttribute("doGetItem","0")
+  aml_cmd.setAttribute("serverEvents","0")
+  aml_cmd.setAttribute("select",selectProps)
+  
+  Dim thisItem As Item = aml_cmd.apply()
+  If thisItem.isError() Then Return thisItem
+  
+  'add to users recently visited list
+  aml_cmd = AddRecentlyVisited(userId,thisItem)
+  If aml_cmd.isError() Then Return aml_cmd
+  
+  Return Me
+End Function
+
+'------------
+Private Function AddRecentlyVisited (userId As String, ByRef thisItem As Item) As Item
+
+  Dim dtNow As DateTime = System.DateTime.UtcNow
+  Dim tmpPtrn As String = "yyyy-MM-ddTHH:mm:ss"
+  Dim tmpDt As String = dtNow.toString(tmpPtrn, DateTimeFormatInfo.InvariantInfo)
+  Dim sCntxt As I18NSessionContext = inn.getI18NSessionContext()
+
+  Dim dtNowStr As String = sCntxt.ConvertUtcDateTimeToNeutral(tmpDt, tmpPtrn)
+
+  Dim whereStr As String = "[User_Recently_Visited_Item].source_id='"& userId & "'" & _
+  " and [User_Recently_Visited_Item].item_id_string='"& thisItem.getID() &"'" & _
+  " and [User_Recently_Visited_Item].item_generation='"& thisItem.getProperty("generation","") &"'"
+
+  Dim recentlyVisited As Item = Me.newItem("User Recently Visited Item","merge")
+  recentlyVisited.setAttribute("serverEvents","0")
+  recentlyVisited.setAttribute("where",whereStr)
+  recentlyVisited.setProperty("source_id", userId)
+  recentlyVisited.setProperty("insert_date", dtNowStr)
+  recentlyVisited.setProperty("item_type", thisItem.GetType())
+  recentlyVisited.setProperty("item_id_string", thisItem.getID())
+  recentlyVisited.setProperty("item_config_id_string", thisItem.getProperty("config_id",""))
+  recentlyVisited.setProperty("item_generation", thisItem.getProperty("generation",""))
+  
+  Dim plmIdentity As Aras.Server.Security.Identity = Aras.Server.Security.Identity.GetByName("Administrators")
+  Dim PermissionWasSet As Boolean = Aras.Server.Security.Permissions.GrantIdentity(plmIdentity)
+
+  recentlyVisited = recentlyVisited.apply()
+  If recentlyVisited.isError() Then Return recentlyVisited
+
+  'System.Diagnostics.Debugger.Break()
+
+  'get user's recently visited count
+  Dim SQLstr As String = "SELECT [USER].recently_visited_count FROM [USER] WHERE [USER].id='" & userID & "'"
+  aml_cmd = inn.ApplySQL(SQLstr)
+  Dim recentlyVisitedCount As Integer = aml_cmd.getProperty("recently_visited_count","15")
+
+  'read user's recently visited list straight from DB table
+  SQLstr = "SELECT id,insert_date,item_type,item_id_string,item_generation from [User_Recently_Visited_Item]" & _
+  " WHERE [User_Recently_Visited_Item].source_id='"& userId &"' ORDER BY insert_date DESC"
+  aml_cmd = inn.ApplySQL(SQLstr)
+  If aml_cmd.isError() Then Return aml_cmd
+  
+  'remove rows > user's recently visited count
+  If aml_cmd.getItemCount() > recentlyVisitedCount Then
+    Dim i As Integer
+    For i=recentlyVisitedCount To aml_cmd.getItemCount()-1
+      Dim delCmd As Item = Me.NewItem("User Recently Visited Item","delete")
+      delCmd.setID(aml_cmd.getItemByIndex(i).getProperty("id","invalid"))
+      delCmd = delCmd.apply()
+      If delCmd.isError() Then Return delCmd
+    Next i
+  End If
+  
+  If (PermissionWasSet=True) Then
+	Aras.Server.Security.Permissions.RevokeIdentity(plmIdentity)
+  End If	
+
+  Return recentlyVisited 
+End Function
+
+]]></method_code>
+  <method_type>VB</method_type>
+  <name>RecentlyVisited sAddTo UsersList</name>
+ </Item>
+</AML>

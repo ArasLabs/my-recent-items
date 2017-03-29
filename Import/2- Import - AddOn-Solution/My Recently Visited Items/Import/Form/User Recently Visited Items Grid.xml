@@ -1,0 +1,195 @@
+﻿<AML>
+ <Item type="Form" id="5CA17F8211E4481CB71A5E75567E62E5" action="add">
+  <name>User Recently Visited Items Grid</name>
+  <stylesheet><![CDATA[../styles/default.css]]></stylesheet>
+  <Relationships>
+   <Item type="Body" id="0893CD39DD114A8E8609975DAF14FC92" action="add">
+    <sort_order>128</sort_order>
+    <source_id keyed_name="User Recently Visited Items Grid" type="Form">5CA17F8211E4481CB71A5E75567E62E5</source_id>
+    <Relationships>
+     <Item type="Field" id="66F771A2A6004850999F698ECE0055DD" action="add">
+      <bg_color>#FFFFFF</bg_color>
+      <border_width>0</border_width>
+      <field_type>html</field_type>
+      <font_color>#000000</font_color>
+      <font_family>arial, helvetica, sans-serif</font_family>
+      <font_size>8pt</font_size>
+      <font_weight>bold</font_weight>
+      <html_code><![CDATA[<script>
+// Generic FlatGridView - HTML-code
+// this is a skeleton.
+// additional functions with logic need to be loaded from methods attached to tbe Form
+// (FormEvent = onLoad)
+//
+// logic of all Click Handlers flatGrid1_XXXX ()  listed in this HTML must be in these attached Form handlers as well
+//
+// ====================================================================================================================
+var toolbar1_Control = null;
+var flatGrid1_Control = null;
+var flatGrid1_MsgsId;
+
+var innovator = new top.Innovator();
+var I18Ncntx = document.thisItem? document.thisItem.newItem.getInnovator().getI18NSessionContext() : null;
+var OnLoadMethodsLoaded = false;
+var thisItem = document.thisItem? document.thisItem : undefined;
+
+top.aras.uiAddConfigLink2Doc4Assembly(document, "TreeTable");
+top.aras.uiAddConfigLink2Doc4Assembly(document, "Toolbar");
+
+// ====================================================================================================================
+function inittoolbar1_Control() {
+    initFormOnLoadMethods();
+
+	if (!window.loadGridToolbarHTML()) {
+     initFormOnLoadMethods();
+	}
+	var res = window.loadGridToolbarHTML();  // this function must reside in one of the handlers loaded with the Form (onLoad)
+    toolbar1_Control.show();
+}
+function initFormOnLoadMethods() {
+  try { onload1(); } catch (excep) { }  //handler method must be attached to 1st onLoad event of this Form
+  try { onload2(); } catch (excep) { }  //handler method must be attached to 2nd onLoad event of this Form
+  OnLoadMethodsLoaded = true;
+}
+
+function initGrid1() {
+    inittoolbar1_Control();
+
+    if (!window.RefreshGrid)  // this function must reside in one of the handlers loaded with the Form (onLoad)
+	{
+		setTimeout('initGrid1()',10);
+		return;
+	}
+	//alert(thisItem);
+	var res = window.RefreshGrid(true, thisItem);
+}
+
+var onresize_handler = function ()
+{
+	fixGridHeight();
+}
+
+function fixHeightForTr()
+{
+  return; // dummy
+}
+
+function fixGridHeight()
+{
+	var el = document.getElementById("treeGrid1");
+	top.aras.fixLiquidContainerHeight(document, el);
+	el = document.getElementById("grid_td");
+	top.aras.fixLiquidContainerHeight(document, el);
+}
+window.attachEvent("onresize", onresize_handler);	
+</script>
+
+
+<script type="text/javascript" for="flatGrid1" event="GridStart(isSuccess)">
+	flatGrid1_Control=document.flatGrid1;
+	initGrid1();	
+</script>
+<script type="text/javascript" for="toolbar1" event="Onload()">
+	toolbar1_Control = document.toolbar1;
+</script>
+<script type="text/javascript" for="toolbar1" event="Onclick(tbItem)">
+	toolbar1_onToolbarClick(tbItem);
+</script>
+<script type="text/javascript" for="flatGrid1" event="GridClick(rowId, col)">
+	flatGrid1_onGridClick(rowId, col);
+</script>
+<script type="text/javascript" for="flatGrid1" event="GridDoubleClick(rowId)">
+	flatGrid1_onGridDoubleClick(rowId);
+</script>
+<script type="text/javascript" for="flatGrid1" event="GridLinkClick(strLink)">
+	flatGrid1_onGridLinkClick(strLink);
+</script>
+<script type="text/javascript" for="flatGrid1" event="GridMenuInit(rowId, col, p)">
+	flatGrid1_onGridMenuInit(rowId, col, p);
+</script>
+<script type="text/javascript" for="flatGrid1" event="GridMenuClick(m, rowId, col)">
+	flatGrid1_onGridMenuClick(m);
+</script>
+<script type="text/javascript" for="flatGrid1" event="GridEditCell(mode, rowID, col)">
+	return flatGrid1_onGridEditCell(mode, rowID, col);
+</script>
+<script type="text/javascript" for="flatGrid1" event="GridKeyPress(kEv)">
+	return true;
+</script>
+
+<table id="tb1Table" border="0" style="width: 100%; table-layout: fixed;" cellspacing="0" cellpadding="0">
+	<tr id="toolbar_container">
+		<td style="vertical-align: top;">
+				<object id="toolbar1" style="width: 700px; height: 28px; display: block;" classid="../cbin/Toolbar.dll#Aras.Client.Controls.Toolbar" >
+				</object>
+		</td>
+	</tr>
+</table>
+<div class="tbody" id="tbodyGrid1" onscroll="tb1Table.style.left = -this.scrollLeft;" >
+<table id="grid1Table" border="0" style="width: 100%; table-layout: fixed;" cellspacing="0" cellpadding="0">
+	<tr id="grid1TableRow" >
+		<td class="tr_IE_fix_bug_with_height" style="vertical-align: top;">
+			<object id="flatGrid1" style="width: 700px; height: 500px; display: block;" classid="../cbin/TreeTable.dll#Aras.Client.Controls.GridContainer" VIEWASTEXT>
+			</object>
+		</td>
+	</tr>
+</table>
+</div>
+]]></html_code>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <name>html_recently_visited_grid</name>
+      <sort_order>256</sort_order>
+      <source_id keyed_name="0893CD39DD114A8E8609975DAF14FC92" type="Body">0893CD39DD114A8E8609975DAF14FC92</source_id>
+      <tab_stop>1</tab_stop>
+      <x>0</x>
+      <y>40</y>
+     </Item>
+     <Item type="Field" id="8A9E668D8733464EA5D65CCD12B2F674" action="add">
+      <bg_color>#FFFFFF</bg_color>
+      <border_width>0</border_width>
+      <field_type>html</field_type>
+      <font_color>#000000</font_color>
+      <font_family>arial, helvetica, sans-serif</font_family>
+      <font_size>10pt</font_size>
+      <font_weight>bold</font_weight>
+      <html_code><![CDATA[<div id="recently_visited_title"></div>]]></html_code>
+      <is_disabled>0</is_disabled>
+      <is_visible>1</is_visible>
+      <label xml:lang="en">My Recently Visited Items</label>
+      <label_position>top</label_position>
+      <list_no_blank>0</list_no_blank>
+      <name>html_title</name>
+      <sort_order>128</sort_order>
+      <source_id keyed_name="0893CD39DD114A8E8609975DAF14FC92" type="Body">0893CD39DD114A8E8609975DAF14FC92</source_id>
+      <tab_stop>1</tab_stop>
+      <x>9</x>
+      <y>10</y>
+     </Item>
+    </Relationships>
+   </Item>
+   <Item type="Form Event" id="89168BE696EE4D6781894C0BC2F03E6A" action="add">
+    <form_event>onload</form_event>
+    <related_id keyed_name="Common Grid Handler Funcs" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>Common Grid Handler Funcs</name>
+     </Item>
+    </related_id>
+    <sort_order>1</sort_order>
+    <source_id keyed_name="User Recently Visited Items Grid" type="Form">5CA17F8211E4481CB71A5E75567E62E5</source_id>
+   </Item>
+   <Item type="Form Event" id="DD6F42441CDD4241AFA2E3D9EC623D04" action="add">
+    <form_event>onload</form_event>
+    <related_id keyed_name="Recently Visited Grid Handler" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>Recently Visited Grid Handler</name>
+     </Item>
+    </related_id>
+    <sort_order>2</sort_order>
+    <source_id keyed_name="User Recently Visited Items Grid" type="Form">5CA17F8211E4481CB71A5E75567E62E5</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

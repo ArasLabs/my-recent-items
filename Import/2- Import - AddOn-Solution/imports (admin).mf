@@ -1,0 +1,3 @@
+<imports>
+  <package name="My Recently Visited Items" path="My Recently Visited Items\Import" />
+</imports>

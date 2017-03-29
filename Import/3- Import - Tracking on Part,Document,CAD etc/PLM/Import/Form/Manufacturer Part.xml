@@ -1,0 +1,17 @@
+﻿<AML>
+ <Item type="Form" id="9804885FF61F46238F9CE667E1744C03" action="add">
+  <name>Manufacturer Part</name>
+  <Relationships>
+   <Item type="Form Event" id="4A6128B5B44C4F3988B11E90246EE508" action="add">
+    <form_event>onunload</form_event>
+    <related_id keyed_name="RecentlyVisited AddTo UsersList" type="Method">
+     <Item type="Method" action="get" select="id">
+      <name>RecentlyVisited AddTo UsersList</name>
+     </Item>
+    </related_id>
+    <sort_order>128</sort_order>
+    <source_id keyed_name="Manufacturer Part" type="Form">9804885FF61F46238F9CE667E1744C03</source_id>
+   </Item>
+  </Relationships>
+ </Item>
+</AML>

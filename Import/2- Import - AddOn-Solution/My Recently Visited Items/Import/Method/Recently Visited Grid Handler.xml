@@ -1,0 +1,297 @@
+﻿<AML>
+ <Item type="Method" id="DA7DB1FF385C449E91EDFDC4ECC77EEC" action="add">
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA[// Client side Method: Grid1 Handler
+// 
+// load with --> onLoad Event on Form:
+//
+// the variable flatGrid1_Control is defined globally in separate HTML code on form field
+// the variable toolbar1_Control is defined globally in separate HTML code on form field
+//
+//  ---- history -----
+//  rolf  19.10.2012          initial version
+//
+// ====================================================================================================================
+if (OnLoadMethodsLoaded) {return;}
+var result;
+var isStartedFromTab = (top.relationships && top.relationships !== undefined);
+
+// global variables
+var userId,thisItemRelationship;
+var columnProperties = "";
+var columnDisplayTypes = "";
+var columnWidths = "";
+var columnAlign = "";
+var itemSelectProperties = "";
+var relSelectProperties = "";
+var clickedGridLinkValue;
+var treeGrid1;
+var GridXMLHeader;
+
+
+//--------------
+initGlobalVariables = function () {
+  //debugger;
+  thisItemRelationship = "User Recently Visited Item";
+
+  columnProperties = "item.locked_by_id,i,item.keyed_name,item.major_rev,rel.item_generation,item.classification,item.state";
+  columnDisplayTypes = "lock,icon,text:as_link,text,text,text,text:bg_color";
+  columnWidths = "40,40,250,40,40,170,120";
+  columnAlign = "c,c,l,c,c,l,l";
+  itemSelectProperties = "keyed_name,major_rev,generation,classification,state,current_state,locked_by_id(keyed_name)";
+  relSelectProperties = "sort_order,insert_date,item_id_string,item_config_id_string,item_type,item_generation";
+
+  flatGrid1 = new RecentlyVisitedGrid;
+};
+
+// ========= MAIN - callbacks for HTML skeleton in HTML field on the Form ========
+// -- callback to populate grid --
+window.RefreshGrid = function(doInit,item)
+{
+  if(doInit === undefined) {doInit = true;}
+
+  initGlobalVariables();
+  	
+//  if(!treeGrid1.Initialized)
+  if(doInit)
+  {
+	flatGrid1.Initialize();
+  }
+  
+  fn_setTbControlEnabled("refresh_all", false);
+  try
+  {
+    flatGrid1.Draw(true);
+  }
+  finally
+  {
+    fn_setTbControlEnabled("refresh_all", true);
+  }
+  fn_initToolbar();
+};
+
+// -- callback to initialize toolbar --
+window.loadGridToolbarHTML = function()
+{
+  var toolbarHTMLstring = '';
+  toolbarHTMLstring += '<toolbarapplet on_click="toolbar1_onToolbarClick" ';
+  toolbarHTMLstring += 'on_load="toobarStart" buttonstyle="windows"  buttonsize="40,22" font="' + "Arial-bold-10" + '" ';
+  toolbarHTMLstring += 'top_border="1"  bottom_border="1"><toolbar id="toolbar"> ';
+  toolbarHTMLstring += '<button text="Refresh" id="refresh_all" image="icons/20x20refresh.gif" tooltip="Refresh" disabled="false" /> ';
+  //toolbarHTMLstring += '<edit id="recently_visited" label="My Recently Visited Items" text="" size="0" style="font-family:Arial; font-size:10;" disabled="true" />';
+  toolbarHTMLstring += '</toolbar></toolbarapplet>';
+	  
+  toolbar1_Control.loadToolbarFromStr(toolbarHTMLstring);
+//  toolbar1_Control.loadXML(toolbarHTMLstring);
+  return;
+};
+
+//==================== Grid Layout & Style ===================================
+RecentlyVisitedGrid = function RecentlyVisitedGridFunc()
+{
+	this.itemType = thisItemRelationship;
+};
+
+var standardGridFont= "Microsoft Sans Serif-8";
+var italicGridFont= "Microsoft Sans Serif-italic-8";
+
+//------- Initialize the layout of the Grid
+RecentlyVisitedGrid.prototype.Initialize = function RecentlyVisitedGrid_Initialize()
+{
+ //#####  FLAT GRID LIST #####
+
+  GridXMLHeader = '';
+  GridXMLHeader += '<?xml version="1.0"?><table font="' + standardGridFont + '" ';
+  GridXMLHeader += 'backgroundColor="white" ';
+  GridXMLHeader += 'sel_bgColor="steelbue" '; // html predefined
+  GridXMLHeader += 'sel_TextColor="white" ';
+  GridXMLHeader += 'header_BgColor="buttonface" ';
+  GridXMLHeader += 'delim ="|" ';
+  //GridXMLHeader += 'zebra="true" ';
+  GridXMLHeader += 'editable="false" ';
+  GridXMLHeader += 'draw_grid="true" ';
+  GridXMLHeader += 'bgInvert="true" ';    
+  GridXMLHeader += '  column_draggable="true" ';
+  GridXMLHeader += '> ';
+
+  GridXMLHeader += '<thead>';
+  GridXMLHeader += fn_GenerateTableHeadingsXML ("ItemType",thisItemRelationship,columnProperties);
+  GridXMLHeader += '</thead>';
+
+  GridXMLHeader += '<columns>';
+  GridXMLHeader += fn_GenerateTableColumnsXML (columnWidths,columnAlign);
+  GridXMLHeader += '</columns>';
+
+  GridXMLHeader += '<menu>';
+  GridXMLHeader += '<emptytag/>';
+  GridXMLHeader += '</menu>';
+  GridXMLHeader += '</table>';
+
+  this.Initialized = true;
+};
+
+//------- populate the Grid
+RecentlyVisitedGrid.prototype.Draw = function RecentlyVisitedGrid_Draw(forceGetRelationships)
+{
+  //debugger;
+
+  //flatGrid1_Control.RemoveAllRows();
+  flatGrid1_Control.clear();flatGrid1_Control.focus();
+  flatGrid1_Control.InitXml(GridXMLHeader);	
+
+  userId = top.aras.getUserID();
+  var qry = top.aras.newIOMItem("","");
+  var amlQry = "<Item type='" + thisItemRelationship + "' action='get' select='source_id,insert_date," + relSelectProperties + "' orderBy='insert_date DESC'>";
+  amlQry += "<source_id>"+userId+"</source_id>";
+  amlQry += "</Item>";
+  qry.loadAML(amlQry);
+  var recentlyVisitedRowItems = qry.apply();
+ 
+  for (var p=0; p<recentlyVisitedRowItems.getItemCount(); p++) {
+    var rowItem = recentlyVisitedRowItems.getItemByIndex(p);
+    var rowItemType = rowItem.getProperty("item_type","");
+   
+    var itemIcon = fn_GetSmallIconFormatOfItemType(rowItemType);
+
+    qry = top.aras.newIOMItem("","");
+    qry.loadAML("<Item type='"+rowItemType+"' action='get' select='item_number,name,title,"+itemSelectProperties+"' id='"+rowItem.getProperty("item_id_string","invalid")+"' />");
+    qry = qry.apply();
+    if (qry.isError()) {
+     debugger;
+      // remove all generations of this item from list of all users
+      qry = top.aras.newIOMItem("","");
+      qry.loadAML("<Item type='"+rowItemType+"' action='RecentlyVisited DelFrom UserList' id='"+rowItem.getProperty("item_id_string","invalid")+"' ><config_id>"+rowItem.getProperty("item_config_id_string","")+"</config_id></Item>");
+      qry = qry.apply();
+    }
+    else {
+      // add to display grid
+      var newKn = fn_BuildItemKeyedName(qry);
+      qry.setProperty("keyed_name",newKn);
+     
+      rowItem.setRelatedItem(qry);
+	
+      var newNodeId = rowItem.getID();
+      fn_FlatGrid_AddRowToGrid( flatGrid1_Control, newNodeId, columnProperties, columnDisplayTypes, itemIcon, rowItem, true);
+
+      flatGrid1_Control.setUserData(newNodeId,"gridData_itemID",rowItem.getProperty("item_id_string",""));
+      flatGrid1_Control.setUserData(newNodeId,"gridData_itemtype",rowItemType );
+    }
+  }
+
+};
+
+function fn_BuildItemKeyedName (thisItem)
+{
+  var kn = "";
+  var tmpKN;
+
+  switch (thisItem.getType())
+  {
+   case "Document":
+   case "Part":
+   case "CAD":
+   case "Manufacturer Part":
+   case "Manufacturer":
+      kn = thisItem.getProperty("item_number","");
+      if (kn !== "") {kn = kn + " - " + thisItem.getProperty("name","");}
+      else {kn = thisItem.getProperty("name","");}
+     break;
+
+   default:
+    kn = thisItem.getProperty("keyed_name","");
+    if (kn === "" || kn === thisItem.getID()) {
+      kn = "";
+      tmpKN = thisItem.getProperty("item_number","");
+      if (tmpKN !== "") {kn = kn + tmpKN;}
+    
+      tmpKN = thisItem.getProperty("name","");
+      if (tmpKN !== "") {kn = kn + " " + tmpKN;}
+
+      tmpKN = thisItem.getProperty("title","");
+      if (tmpKN !== "") {kn = kn + " " + tmpKN;}
+ 
+      if (kn === "") {kn = thisItem.getID();}
+    }
+  }
+  return kn;
+}
+
+// =============================  Click Handlers ===============================
+fn_initToolbar = function () {
+  fn_setTbControlEnabled("view_item", true);
+
+  var val = (top.aras.getVariable('ShowLabels') == 'true');
+  toolbar1_Control.showLabels(val);
+};
+toolbar1_onToolbarClick = function (item) {
+	flatGrid1_Control.turnEditOff();
+	if (item.getId() == "refresh_all") {flatGrid1_onrefresh_all();}
+    if (item.getId() == "view_item") {flatGrid1_onViewItem();}
+};
+
+flatGrid1_onGridMenuInit = function (row,col,p) {
+	var mnu = flatGrid1_Control.getMenu();
+	mnu.removeAll();
+	mnu.add("view_item","View");
+    mnu.add("clear_my_list","Clear My List");
+//	mnu.addSeparator();
+
+	mnu.show();
+};
+
+flatGrid1_onGridMenuClick = function (menuChoice) {
+  if (menuChoice == "view_item") {flatGrid1_onViewItem();}
+  if (menuChoice == "clear_my_list") {flatGrid1_onClearMyList();}
+};
+
+flatGrid1_onGridClick = function (row,c) {
+  fn_setTbControlEnabled("view_item", true);
+  // if clicked on a link ?
+  if (clickedGridLinkValue && clickedGridLinkValue !== "")
+  {
+    clickedGridLinkValue = "";
+    flatGrid1_onViewItem();
+  }
+};
+
+flatGrid1_onGridDoubleClick = function (row) {
+  flatGrid1_onViewItem();
+};
+
+flatGrid1_onGridLinkClick = function (strLink) {
+  //assumes only 1 link per row that links to the row's data item
+  clickedGridLinkValue = strLink; 
+};
+
+flatGrid1_onrefresh_all = function () {
+  // read data from form again
+
+  window.RefreshGrid(false);
+};
+
+flatGrid1_onViewItem = function () {
+  var selectedId = flatGrid1_Control.getSelectedId();
+  if (!selectedId) {return;}
+  var my_itemtype = flatGrid1_Control.getUserData(selectedId,"gridData_itemtype");
+  var my_itemid = flatGrid1_Control.getUserData(selectedId,"gridData_itemID");
+  if (my_itemid === "") {return;}
+  if (top.aras.uiFindWindowEx(my_itemid)){return;}
+  top.aras.uiShowItem(my_itemtype, my_itemid );
+};
+
+
+flatGrid1_onClearMyList = function () {
+  // caller server method to do the job.
+  var itm = top.aras.newIOMItem(thisItemRelationship,"");
+  itm.setAttribute("userID",userId);
+  itm = itm.apply("RecentlyVisited sClear UsersList");
+  
+  if (itm.isError()) {top.aras.AlertError(itm.getErrorString());return;}
+  
+  // refresh Grid
+  window.RefreshGrid(false);
+};]]></method_code>
+  <method_type>JavaScript</method_type>
+  <name>Recently Visited Grid Handler</name>
+ </Item>
+</AML>

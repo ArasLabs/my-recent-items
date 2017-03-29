@@ -1,0 +1,86 @@
+﻿<AML>
+ <Item type="Method" id="E835E2E92C6D4687BEC4E8E65095AA8F" action="add">
+  <comments>called from onAfterUpdate on core ItemType</comments>
+  <execution_allowed_to keyed_name="World" type="Identity">A73B655731924CD0B027E4F4D5FCC0A9</execution_allowed_to>
+  <method_code><![CDATA['MethodTemplateName=VBMain;
+Dim inn As Innovator = Me.getInnovator()
+Dim aml_cmd As Item
+
+Function Main() As Item
+  'System.Diagnostics.Debugger.Break()
+  
+  Dim itemTypeId As String = Me.getID()
+  Dim isRecentlyVisited As Boolean = (Me.getProperty("is_recently_visited","0") = "1")
+
+  ' get ID of Method
+  aml_cmd = inn.getItemByKeyedName("Method","RecentlyVisited AddTo UsersList")
+  Dim AddToRecentlyVisitedMetodId As String = aml_cmd.getID()
+  
+  ' add or remove Method from Form Events
+  aml_cmd = mergeEventToForms(itemTypeId,AddToRecentlyVisitedMetodId,isRecentlyVisited)
+  If aml_cmd.isError() Then Return aml_cmd
+
+  Return Me
+End Function
+
+'-----
+Private Function mergeEventToForms (itemTypeId As String, methodId As String, addTracking As Boolean) As Item
+  Dim amlStr As String
+
+  'get all forms and form events of this itemType
+  amlStr =  "" & _
+ " <Item type='View' action='get' select='sort_order,source_id,related_id,is_exclude_from_recently_visited'>" & _
+ " <source_id>" & itemTypeId & "</source_id>" & _
+ " <related_id>" & _
+ "  <Item type='Form' action='get' select='name' >" & _
+ "   </Item>" & _
+ " </related_id>" & _
+ "</Item>"
+
+  aml_cmd = Me.newItem("","")
+  aml_cmd.loadAML(amlStr)
+  Dim itemTypeViews As Item = aml_cmd.apply()
+  If itemTypeViews.isError() Then Return itemTypeViews
+
+  Dim i As Integer
+  ' loop through every Form
+  For i=0 To itemTypeViews.getItemCount()-1
+  	Dim formItem As Item = itemTypeViews.getItemByIndex(i).getRelatedItem()
+  	Dim formId As String = formItem.getID()
+  	Dim action As String = ""
+  	
+  	If itemTypeViews.getItemByIndex(i).getProperty("is_exclude_from_recently_visited","0") = "0" Then
+  	   action = "merge"
+  	Else
+  	   action = "delete"
+    End If
+
+    If Not addTracking Then action = "delete" 'remove event from all forms
+  
+  	amlStr= "[Form_Event].source_id='" & formId & "' and [Form_Event].related_id='" & methodId & "'"
+    
+    aml_cmd = Me.newItem("Form Event",action)
+    aml_cmd.setAttribute("where",amlStr)
+    If action <> "delete" Then
+      aml_cmd.setProperty("source_id",formId)
+      aml_cmd.setProperty("related_id",methodId)
+      'aml_cmd.setProperty("form_event","onunload") ## does not work ###
+    End If
+    aml_cmd = aml_cmd.apply()
+    If aml_cmd.isError() Then Return aml_cmd
+
+    'somehow .. the event only works when updating via SQL ???    
+    If action <> "delete" Then
+      Dim SQLstr As String = "UPDATE [FORM_EVENT] SET [FORM_EVENT].form_event='onunload' WHERE " & amlStr
+      inn.applySQL(SQLstr)
+    End If
+
+  Next i	
+
+  Return Me
+End Function
+	]]></method_code>
+  <method_type>VB</method_type>
+  <name>RecentlyVisited Set Tracking</name>
+ </Item>
+</AML>

@@ -1,10 +1,10 @@
 # My Recently Visited Items
 
-Current version v3-1. Use older versions for Aras Relases 10SP3 and older.
+Current version [v4](https://github.com/ArasLabs/my-recent-items/releases/tag/v4) supports Aras Innovator 11 SP9+.
 
 This Add-On Package adds a stack to track the N recently visited items per user login. Item Types to be tracked can be configured to be any ItemType. (default = Document, Part, CAD,Project,Manufacturer Part,Manufacturer,Express ECO, PR,).
 
-On the TOC, under „My Innovator“, a new line „My Recently Visited“ will show
+On the TOC, under "My Innovator", a new line "My Recently Visited" will show.
 
 Improved configurability and multi language support
 
@@ -16,6 +16,7 @@ This project and the following release notes have been migrated from the old Ara
 
 Release | Notes
 --------|--------
+[v4](https://github.com/ArasLabs/my-recent-items/releases/tag/v4) | Update to support Aras Innovator 11 SP9.
 [v3](https://github.com/ArasLabs/my-recent-items/releases/tag/v3) | Aras 11 and Aras 10SP4++. Solution Package and Documentation. It loads on top of the standard ARAS Solutions PE,PM without any conflicts. See Readme.txt for installation steps.
 [v2](https://github.com/ArasLabs/my-recent-items/releases/tag/v2) | Solution Package and Documentation. It loads on top of the standard ARAS Solutions PE,PM,QP without any conflicts.
 [v1](https://github.com/ArasLabs/my-recent-items/releases/tag/v1) | Solution Package and Documentation. It loads on top of the standard ARAS Solutions PE,PM,QP without any conflicts.
@@ -24,6 +25,7 @@ Release | Notes
 
 Project | Aras
 --------|------
+[v4](https://github.com/ArasLabs/my-recent-items/releases/tag/v4) | 11 SP9+
 [v3](https://github.com/ArasLabs/my-recent-items/releases/tag/v3) | 10 SP4+, 11.0
 [v2](https://github.com/ArasLabs/my-recent-items/releases/tag/v2) | 10 - 10 SP3
 [v1](https://github.com/ArasLabs/my-recent-items/releases/tag/v1) | 9.3 SPx, 9.4 SPx
@@ -55,10 +57,12 @@ Project | Aras
   * `..\my-recent-items\Import\1-Common Grid Utilities v3-0 (partial)\imports (admin).mf`
   * `..\my-recent-items\Import\2- Import - AddOn-Solution\imports (admin).mf`
   * `..\my-recent-items\Import\3-Configuration Data\imports (admin).mf`
-  * Optional: `..\my-recent-items\Import\SetPackageVersion (optioal)\imports (admin).mf`
+  * Optional: `..\my-recent-items\Import\SetPackageVersion (optional)\imports (admin).mf`
 10. Close the Aras Package Import tool.
 
 ## Usage
+
+![Screenshot](Screenshots/screenshot.PNG)
 
 See [My Recently Visited Items  - Add-On v3-0.pdf](./Documentation/My%20Recently%20Visited%20Items%20%20-%20Add-On%20v3-0.pdf) for more information on using this project.
 
@@ -75,6 +79,10 @@ For more information on contributing to this project, another Aras Labs project,
 ## Credits
 
 Created by Rolf Laudenbach for Aras Corporation.
+
+Contributors:
+* @AngelaIp
+* Eli Donahue for Aras Labs (@EliJDonahue)
 
 ## License
 

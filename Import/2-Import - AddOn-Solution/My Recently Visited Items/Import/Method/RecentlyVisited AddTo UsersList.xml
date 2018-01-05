@@ -18,7 +18,7 @@
 //alert(thisItem.dom.xml);
 	thisItem = thisItem.apply();
 	if (thisItem.isError()) {
-	  return top.aras.AlertError(thisItem.getErrorString());
+	  return aras.AlertError(thisItem.getErrorString());
 	}	
 	return;
 ]]></method_code>

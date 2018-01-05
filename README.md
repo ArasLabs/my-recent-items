@@ -57,7 +57,7 @@ Project | Aras
   * `..\my-recent-items\Import\1-Common Grid Utilities v3-0 (partial)\imports (admin).mf`
   * `..\my-recent-items\Import\2- Import - AddOn-Solution\imports (admin).mf`
   * `..\my-recent-items\Import\3-Configuration Data\imports (admin).mf`
-  * Optional: `..\my-recent-items\Import\SetPackageVersion (optioal)\imports (admin).mf`
+  * Optional: `..\my-recent-items\Import\SetPackageVersion (optional)\imports (admin).mf`
 10. Close the Aras Package Import tool.
 
 ## Usage

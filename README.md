@@ -80,6 +80,10 @@ For more information on contributing to this project, another Aras Labs project,
 
 Created by Rolf Laudenbach for Aras Corporation.
 
+Contributors:
+* @AngelaIp
+* Eli Donahue for Aras Labs (@EliJDonahue)
+
 ## License
 
 Aras Labs projects are published to Github under the MIT license. See the [LICENSE file](./LICENSE.md) for license rights and limitations.

@@ -60,6 +60,8 @@ Project | Aras
 
 ## Usage
 
+![Screenshot](Screenshots/screenshot.PNG)
+
 See [My Recently Visited Items  - Add-On v3-0.pdf](./Documentation/My%20Recently%20Visited%20Items%20%20-%20Add-On%20v3-0.pdf) for more information on using this project.
 
 ## Contributing

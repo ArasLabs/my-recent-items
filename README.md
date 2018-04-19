@@ -1,6 +1,6 @@
 # My Recently Visited Items
 
-Current version [v4](https://github.com/ArasLabs/my-recent-items/releases/tag/v4) supports Aras Innovator 11 SP9+.
+Current version [v4.1](https://github.com/ArasLabs/my-recent-items/releases/tag/v4.1) supports Aras Innovator 11 SP9+.
 
 This Add-On Package adds a stack to track the N recently visited items per user login. Item Types to be tracked can be configured to be any ItemType. (default = Document, Part, CAD,Project,Manufacturer Part,Manufacturer,Express ECO, PR,).
 
@@ -16,6 +16,7 @@ This project and the following release notes have been migrated from the old Ara
 
 Release | Notes
 --------|--------
+[v4.1](https://github.com/ArasLabs/my-recent-items/releases/tag/v4.1) | Fixes "Where Used" and "Structure Browser" context menu options.
 [v4](https://github.com/ArasLabs/my-recent-items/releases/tag/v4) | Update to support Aras Innovator 11 SP9.
 [v3](https://github.com/ArasLabs/my-recent-items/releases/tag/v3) | Aras 11 and Aras 10SP4++. Solution Package and Documentation. It loads on top of the standard ARAS Solutions PE,PM without any conflicts. See Readme.txt for installation steps.
 [v2](https://github.com/ArasLabs/my-recent-items/releases/tag/v2) | Solution Package and Documentation. It loads on top of the standard ARAS Solutions PE,PM,QP without any conflicts.
@@ -25,6 +26,7 @@ Release | Notes
 
 Project | Aras
 --------|------
+[v4.1](https://github.com/ArasLabs/my-recent-items/releases/tag/v4.1) | 11 SP9+
 [v4](https://github.com/ArasLabs/my-recent-items/releases/tag/v4) | 11 SP9+
 [v3](https://github.com/ArasLabs/my-recent-items/releases/tag/v3) | 10 SP4+, 11.0
 [v2](https://github.com/ArasLabs/my-recent-items/releases/tag/v2) | 10 - 10 SP3

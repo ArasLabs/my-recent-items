@@ -325,10 +325,10 @@ fn_onResultsGridMenuClickAction = function (actionId, eRowArgs) {
 		 top.aras.uiShowItem(eRowArgs.rowItemType, eRowArgs.rowItemId);
 	  	 break;
 	  case "where_used":
-	     Dependencies.View(eRowArgs.rowItemType, eRowArgs.rowItemId, true); // true = where used
+	     Dependencies.View(eRowArgs.rowItemType, eRowArgs.rowItemId, true, aras); // true = where used
 	  	 break;
 	  case "structure_browser":
-	     Dependencies.View(eRowArgs.rowItemType, eRowArgs.rowItemId, false); // true = where used
+	     Dependencies.View(eRowArgs.rowItemType, eRowArgs.rowItemId, false, aras); // true = where used
 	  	 break;
 	 }
 	return;

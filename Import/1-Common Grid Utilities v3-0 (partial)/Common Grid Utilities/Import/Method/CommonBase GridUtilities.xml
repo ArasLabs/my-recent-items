@@ -25,9 +25,9 @@ BaseGrid = function () {
     //}
 
 	var variable_dom;
-	variable_dom = top.aras.getItemFromServerByName("Variable", "VersionMajor", "value,default_value");
+	variable_dom = aras.getItemFromServerByName("Variable", "VersionMajor", "value,default_value");
 	var arasReleaseCode = variable_dom.getProperty("value","");
-	variable_dom = top.aras.getItemFromServerByName("Variable", "VersionServicePack", "value,default_value");
+	variable_dom = aras.getItemFromServerByName("Variable", "VersionServicePack", "value,default_value");
 	arasReleaseCode += "-" + variable_dom.getProperty("value","");
 	this.arasRelaseCode = arasReleaseCode;
 	this.arasUseOldDojoPath = false;
@@ -208,7 +208,7 @@ BaseGrid.prototype = {
         mainDiv.innerHTML = htmlText;
         document.body.appendChild(mainDiv);
         mainTable = document.getElementById('main_table');
-        top.aras.browserHelper.adjustGridSize(window, function () {
+        aras.browserHelper.adjustGridSize(window, function () {
             mainTable.style.height = (docElement.clientHeight - 30) + 'px';
         }, false);
 
@@ -385,9 +385,9 @@ BaseGrid.prototype = {
 	///
 	/// </summary>
     getColumnLabelByName: function (typeName, propName) {
-        var itemType = top.aras.getItemTypeForClient(typeName, "name");
+        var itemType = aras.getItemTypeForClient(typeName, "name");
         var propItem = itemType.getItemsByXPath("Relationships/Item[@type='Property' and name='" + propName + "']").node;
-        return top.aras.getItemProperty(propItem, 'label');
+        return aras.getItemProperty(propItem, 'label');
     },
     //--- API
 	/// <summary>
@@ -402,12 +402,12 @@ BaseGrid.prototype = {
                 tbi.setEnabled(bool);
             }
         } catch (excep) {
-            top.aras.AlertError('exception during setToolbarItemEnable()');
+            aras.AlertError('exception during setToolbarItemEnable()');
         }
     },
     //--- API
     getProperty: function (node, element) {
-        //this function is used instead of top.aras.getItemProperty because of performance reasons
+        //this function is used instead of aras.getItemProperty because of performance reasons
         var value = "";
         if (node) {
             var tempNode = node.selectSingleNode(element);
@@ -648,7 +648,7 @@ BaseGrid.prototype = {
 		}
 		var data = { itemNode: itemNode, relationshipNode: null, parentRowId: null, rowIcon: icon};
 		if (!rowConfig.columnMapping)
-			{top.aras.AlertError("Flat grid API call 'DrawFlatGridRow()' did not receive 'rowConfig.columnMapping' from calling function!"); return;}
+			{aras.AlertError("Flat grid API call 'DrawFlatGridRow()' did not receive 'rowConfig.columnMapping' from calling function!"); return;}
         var row = new RowClass(this, data, this.gridVisibleColumns, rowConfig.columnMapping);
 
 		var newRowID;
@@ -1010,14 +1010,14 @@ BaseGrid.prototype = {
 
         if (structItemRelShipConfig.isReverseQuery === true) {
             // build and run reverse Query
-            var relShipItem = top.aras.newIOMItem(structItemRelShipConfig.relName, "get");
+            var relShipItem = aras.newIOMItem(structItemRelShipConfig.relName, "get");
 			if (structItemRelShipConfig.relationshipSelectProperties.indexOf(structItemRelShipConfig.relatedItemProperty) < 0)
 				{relShipItem.setAttribute("select", structItemRelShipConfig.relationshipSelectProperties+","+structItemRelShipConfig.relatedItemProperty);}
 			else {relShipItem.setAttribute("select", structItemRelShipConfig.relationshipSelectProperties);}
 
             relShipItem.setProperty("related_id", dataItem.getID());  //## for reverse query  - disconnected queries are different !!!!
 
-            relItem = top.aras.newIOMItem(structItemRelShipConfig.relatedItemType, "get");
+            relItem = aras.newIOMItem(structItemRelShipConfig.relatedItemType, "get");
             relItem.setAttribute("select", structItemRelShipConfig.relatedItemSelectProperties);
             if (this.isReleasedMode) {
                 fn_setConditonOnItem(relItem, structItemRelShipConfig.relatedItemReleasedCondition);
@@ -1092,11 +1092,11 @@ BaseGrid.prototype = {
 		// check if relevant grid config for newRowId is available
 		if (relItems.getItemByIndex(0).getProperty(structItemRelShipConfig.relatedItemProperty, "") === "") {
 			if ( relItems.getItemByIndex(0).getProperty("config_id", "") === "") {
-			top.aras.AlertError("A NULL relationship's grid configuration is missing definition of select property 'config_id' ! Only first row found will be displayed ! See your System Administrator.");}
+			aras.AlertError("A NULL relationship's grid configuration is missing definition of select property 'config_id' ! Only first row found will be displayed ! See your System Administrator.");}
 		}
 		else {
 			if ( relItems.getItemByIndex(0).getPropertyItem(structItemRelShipConfig.relatedItemProperty).getProperty("config_id", "") === "") {
-			top.aras.AlertError("A Relationship's related item's grid configuration is missing definition of select property 'config_id' ! Only first row found will be displayed ! See your System Administrator.");}
+			aras.AlertError("A Relationship's related item's grid configuration is missing definition of select property 'config_id' ! Only first row found will be displayed ! See your System Administrator.");}
 		}
 
 		// draw child rows
@@ -1375,7 +1375,7 @@ fn_getItemByConfigId = function (itemType, configId, generation, isReleased, sel
 		}
 	}
 	aml += '</Item>';
-	var itm = top.aras.newIOMItem("");
+	var itm = aras.newIOMItem("");
 	itm.loadAML(aml);
 	if (selectProps && selectProps !== undefined && selectProps !== "") {
 		itm.setAttribute("select",selectProps);
@@ -1390,7 +1390,7 @@ fn_getItemByConfigId = function (itemType, configId, generation, isReleased, sel
 fn_IsCurrUserMemberOfIdentityId = function (identity_id_to_check) {
     if (!identity_id_to_check || identity_id_to_check === undefined || identity_id_to_check === "") { return false; }
 
-    var sessionIdentitites_array = top.aras.getIdentityList().split(",");
+    var sessionIdentitites_array = aras.getIdentityList().split(",");
     // now we have all identities the current user (session) is member of
     // scan if given identity is in the list - if yes, return true
     for (var i = 0; i < sessionIdentitites_array.length; i++) {
@@ -1401,7 +1401,7 @@ fn_IsCurrUserMemberOfIdentityId = function (identity_id_to_check) {
 
 fn_GetSmallIconFormatOfItemType = function (itemType) {
     // retrieving ICONs - get the small icon from item types "Part"
-    var qryIcon = top.aras.newIOMItem();
+    var qryIcon = aras.newIOMItem();
     qryIcon.loadAML("<Item type='ItemType' action='get' select='name,open_icon'><name>" + itemType + "</name></Item>");
     qryIcon = qryIcon.apply();
 	var smallIcon = "../images/ArrowRight.svg";
@@ -1411,7 +1411,7 @@ fn_GetSmallIconFormatOfItemType = function (itemType) {
 
 //-----------------
 fn_showFormInModalDialog = function (formName, title, itemTypeName, param) {
-  var formNd = top.aras.getItemByName("Form", formName, 0);
+  var formNd = aras.getItemByName("Form", formName, 0);
   var res = null;
   if (formNd)
   {
@@ -1420,15 +1420,25 @@ fn_showFormInModalDialog = function (formName, title, itemTypeName, param) {
 	else {thisParam	= {};}
     thisParam.title = title;
     thisParam.formId = formNd.getAttribute("id");
-    thisParam.aras = top.aras;
+    thisParam.aras = aras;
     thisParam.itemTypeName = itemTypeName;
 
-    var width = top.aras.getItemProperty(formNd, "width");
-    var height = top.aras.getItemProperty(formNd, "height");
+    var width = aras.getItemProperty(formNd, "width");
+    var height = aras.getItemProperty(formNd, "height");
 
-    res = showModalDialog("ShowFormAsADialog.html", thisParam,"dialogHeight:"+height+"px; dialogWidth:"+width+"px; " +  "status:0; help:0; resizable:1; scroll:0;");
+    thisParam.content = "ShowFormAsADialog.html";
+    thisParam.dialogWidth = width;
+    thisParam.dialogHeight = height;
+    thisParam.status = 0;
+    thisParam.help = 0;
+    thisParam.resizable = 1;
+    thisParam.scroll = 0;
+
+    var wnd = aras.getMostTopWindowWithAras(window);
+    return (wnd.main || wnd).ArasModules.Dialog.show("iframe", thisParam);
+  } else {
+    return res;
   }
-  return res;
 };
 
 //=========================
@@ -1444,7 +1454,7 @@ fn_SetBackgroundColorOfCellsInRow = function (gridCtrl, row, colStart, colEnd, b
 
 //==================================
 fn_LockThisItem = function (itemType, itemId) {
-    var itm = top.aras.newIOMItem(itemType, "get");
+    var itm = aras.newIOMItem(itemType, "get");
     itm.setID(itemId);
     itm.loadAML("<Item type='" + itemType + "' action='lock' id='" + itemId + "' />");
     itm = itm.apply();
@@ -1453,7 +1463,7 @@ fn_LockThisItem = function (itemType, itemId) {
 
 //==================================
 fn_UnLockThisItem = function (itemType, itemId) {
-    var itm = top.aras.newIOMItem(itemType, "get");
+    var itm = aras.newIOMItem(itemType, "get");
     itm.setID(itemId);
     itm.loadAML("<Item type='" + itemType + "' action='unlock' id='" + itemId + "' />");
     itm = itm.apply();
@@ -1468,7 +1478,7 @@ fn_getToolbarElementChoice = function (toolbarCtrl, choiceElementId) {
             return tbi.getSelectedItem();
         }
     }
-    catch (excep) { top.aras.AlertError('exception during getToolbarElementChoice()'); }
+    catch (excep) { aras.AlertError('exception during getToolbarElementChoice()'); }
     return "";
 };
 fn_setToolbarElementChoice = function (toolbarCtrl, choiceElementId, choiceItemId) {
@@ -1481,7 +1491,7 @@ fn_setToolbarElementChoice = function (toolbarCtrl, choiceElementId, choiceItemI
             return choiceItemId;
         }
     }
-    catch (excep) { top.aras.AlertError('exception during setToolbarElementChoice()'); }
+    catch (excep) { aras.AlertError('exception during setToolbarElementChoice()'); }
     return "";
 };
 fn_setToolbarElementText = function (toolbarCtrl, textElementId, textVal) {
@@ -1494,7 +1504,7 @@ fn_setToolbarElementText = function (toolbarCtrl, textElementId, textVal) {
             return;
         }
     }
-    catch (excep) { top.aras.AlertError('exception during setToolbarElementChoice()'); }
+    catch (excep) { aras.AlertError('exception during setToolbarElementChoice()'); }
     return;
 };
 fn_getToolbarElementText = function (toolbarCtrl, textElementId) {
@@ -1504,7 +1514,7 @@ fn_getToolbarElementText = function (toolbarCtrl, textElementId) {
         var tbi = AT.getElement(textElementId);
         if (tbi) {return tbi.getText(textVal);}
     }
-    catch (excep) { top.aras.AlertError('exception during setToolbarElementChoice()'); }
+    catch (excep) { aras.AlertError('exception during setToolbarElementChoice()'); }
     return "";
 };
 
@@ -1530,7 +1540,7 @@ fn_enableToolbarElement = function (toolbarCtrl, tbElementName, doEnable, hideWh
             AT.showItem(tbElementName);
         }
     }
-    catch (excep) { top.aras.AlertError('exception during fn_enableToolbarElement()'); }
+    catch (excep) { aras.AlertError('exception during fn_enableToolbarElement()'); }
 };
 
 //==================================
@@ -1538,19 +1548,19 @@ fn_GetLockedStatusOfItemFromServer = function (itemType, itemId) {
     //to avoid 2 requests to server, get locked_by_id and determine lock status
     //locked_by_id not set --> lockStatus = 0
     //locked_by_id = current User  --> lockStatus = 1,  else  --> lockStatus = 2
-    var itm = top.aras.newIOMItem(itemType, "get");
+    var itm = aras.newIOMItem(itemType, "get");
     itm.setID(itemId);
     itm.loadAML("<Item type='" + itemType + "' action='get' select='locked_by_id' id='" + itemId + "' serverEvents='0' />");
     itm = itm.apply();
     if (itm.isError()) { return 0; }
     var lockUser = itm.getProperty("locked_by_id", "");
     if (lockUser === "") { return 0; }
-    if (lockUser === top.aras.getUserID()) { return 1; }
+    if (lockUser === aras.getUserID()) { return 1; }
     return 2;
 };
 //==================================
 fn_LockThisItem = function (itemType, itemId) {
-    var itm = top.aras.newIOMItem(itemType, "get");
+    var itm = aras.newIOMItem(itemType, "get");
     itm.setID(itemId);
     itm.loadAML("<Item type='" + itemType + "' action='lock' id='" + itemId + "' />");
     itm = itm.apply();
@@ -1558,7 +1568,7 @@ fn_LockThisItem = function (itemType, itemId) {
 };
 //==================================
 fn_UnLockThisItem = function (itemType, itemId) {
-    var itm = top.aras.newIOMItem(itemType, "get");
+    var itm = aras.newIOMItem(itemType, "get");
     itm.setID(itemId);
     itm.loadAML("<Item type='" + itemType + "' action='unlock' id='" + itemId + "' />");
     itm = itm.apply();
@@ -1576,7 +1586,7 @@ fn_GetItemsOfCurrentGeneration = function (itemType, itemIds, selectProperties) 
         idCondition = "<id>" + itemIds + "</id>";
     }
 
-    var itm = top.aras.newIOMItem(itemType, "get");
+    var itm = aras.newIOMItem(itemType, "get");
     itm.loadAML("<Item type='" + itemType + "' action='Get Current Items By IDs' select='" + selectProperties + "' >" + idCondition + "</Item>");
     itm = itm.apply();
     return itm;
@@ -1593,7 +1603,7 @@ fn_GetItemsOfReleasedGeneration = function (itemType, itemIds, selectProperties)
         idCondition = "<id>" + itemIds + "</id>";
     }
 
-    var itm = top.aras.newIOMItem(itemType, "get");
+    var itm = aras.newIOMItem(itemType, "get");
     itm.loadAML("<Item type='" + itemType + "' action='Get Latest Released Items By IDs' select='" + selectProperties + "' >" + idCondition + "</Item>");
     itm = itm.apply();
     return itm;
@@ -1971,7 +1981,7 @@ fn_GetI18NDecimal = function (decimalString, defaultVal, fromType)   {
 };
 //==================================
 fn_GetOpenIconOfItemType = function (itemType)   {
-  var qryIcon = top.aras.newIOMItem();
+  var qryIcon = aras.newIOMItem();
   qryIcon.loadAML("<Item type='ItemType' action='get' select='name,open_icon'><name>"+itemType+"</name></Item>");
   qryIcon = qryIcon.apply();
   var smallIcon = "";
@@ -1983,7 +1993,7 @@ fn_GetLockedCellFormatFromLockedById = function (gridCntxt,lockedById)   {
 	if (!lockedById || typeof(lockedById) == "undefined" || lockedById === "") {
 	   return "";
 	}
-    var currUserId = top.aras.getUserID();
+    var currUserId = aras.getUserID();
 	if (lockedById === currUserId) {
 	   return "<img src='"+gridCntxt.icons["locked"]+"' />"; // locked by this user
 	}
@@ -2138,7 +2148,7 @@ BaseMenuActionHandler.prototype = {
 		case "{OpenURL}":
 			if (cellVal && cellVal !== "") {
 				var pos = cellVal.indexOf("http");
-				if (pos !== 0) {top.aras.AlertError("For security reasons url can only be of format 'http:' or 'https' !");}
+				if (pos !== 0) {aras.AlertError("For security reasons url can only be of format 'http:' or 'https' !");}
 				window.open(cellVal,'_blank','toolbar=no,scrollbars=yes,resizable=yes,top=10,left=10,status=yes');
 				//window.open(cellVal);
 			}
@@ -2150,7 +2160,7 @@ BaseMenuActionHandler.prototype = {
 				var propName = linkActionElements[2];
 				var propValue = linkActionElements[3];
 				//alert(itemType+"-"+propValue);
-				top.aras.uiShowItem(itemType, propValue);
+				aras.uiShowItem(itemType, propValue);
 			}
 			break;
 		default:
@@ -2160,13 +2170,17 @@ BaseMenuActionHandler.prototype = {
   searchItem: function (itemTypeName, width, height) {
     if (!width) {width = 700;}
     if (!height) {height = 500;}
-	var param = { aras: top.aras, itemtypeName: itemTypeName, multiselect: false };
-	var options = { dialogHeight: height, dialogWidth: width, resizable:true};
+	var param = { aras: aras, itemtypeName: itemTypeName, multiselect: false };
+	param.dialogHeight = height;
+	param.dialogWidth = width;
+	param.resizable = true;
+	param.content = 'searchDialog.html';
 
-	var dlgRes = top.aras.modalDialogHelper.show('DefaultModal', window, param, options, 'searchDialog.html');
-	
-	if(!dlgRes) {return null;}
-	return dlgRes.item;
+	var wnd = aras.getMostTopWindowWithAras(window);
+	return (wnd.main || wnd).ArasModules.Dialog.show("iframe", param).promise.then(function(res){
+		if(!dlgRes) {return null;}
+			return dlgRes.item;
+	});
   },
   
   getContextMenuItemOfMenuIndex: function (gridContextMenu, menuIndex) {
@@ -2204,7 +2218,7 @@ BaseMenuActionHandler.prototype = {
 
 	//get Item details from server
 	if (!eActionArgs.isPhantomRow) {
-	  var rowItem = top.aras.newIOMItem(eActionArgs.rowItemType,"get");
+	  var rowItem = aras.newIOMItem(eActionArgs.rowItemType,"get");
 	  rowItem.setID(eActionArgs.rowItemId);
 	  rowItem.setAttribute("select","state,owned_by_id,managed_by_id,team_id,is_released,is_current,locked_by_id");
 	  rowItem = rowItem.apply();
@@ -2217,7 +2231,7 @@ BaseMenuActionHandler.prototype = {
 			// define lock status
 		var lckId = rowItem.getProperty("locked_by_id","");
 		eActionArgs.lockStatus = 0; //not locked
-		if (top.aras.getUserID() === lckId) {eActionArgs.lockStatus = 1;} // locked by user
+		if (aras.getUserID() === lckId) {eActionArgs.lockStatus = 1;} // locked by user
 		else {if (lckId !== "") {eActionArgs.lockStatus = 2;}} // locked by other
 	  }
 	}
@@ -2426,12 +2440,12 @@ fn_executeConfiguredMenuAction = function (configuredActionName, eRowArgs) {
 		}	
 	}
 
-	var action = top.aras.newIOMItem('Action','get');
+	var action = aras.newIOMItem('Action','get');
 	action.setProperty("name",configuredActionName);
 	action.setAttribute("select","name,method(name,method_type,method_code),type,target,location,body,on_complete(name,method_type,method_code),item_query");
 	action = action.apply();
 	if (!action.isError()) {
-		var itemTypeItem = top.aras.newIOMItem('ItemType','get');
+		var itemTypeItem = aras.newIOMItem('ItemType','get');
 		itemTypeItem.setProperty("name",itemToDoActionOnType);
 		itemTypeItem.setAttribute("select","id");
 		itemTypeItem = itemTypeItem.apply();
@@ -2441,12 +2455,12 @@ fn_executeConfiguredMenuAction = function (configuredActionName, eRowArgs) {
 		
 		if (itemToDoActionOnId === "" || actType === 'generic' || actType === 'itemtype') {
 			if (itID === "") {
-				top.aras.invokeAction(action.node, undefined, '');}
+				aras.invokeAction(action.node, undefined, '');}
 			else {
-				top.aras.invokeAction(action.node, itID, '');}
+				aras.invokeAction(action.node, itID, '');}
 		}
 		else {
-			top.aras.invokeAction(action.node, itID, itemToDoActionOnId);
+			aras.invokeAction(action.node, itID, itemToDoActionOnId);
 		}
 	}
 };
@@ -2456,7 +2470,7 @@ fn_onOpenRowItem = function (eRowArgs) {
   //debugger;
   if ( eRowArgs.isPhantomRow){return;}
  
-  top.aras.uiShowItem(eRowArgs.rowItemType, eRowArgs.rowItemId);
+  aras.uiShowItem(eRowArgs.rowItemType, eRowArgs.rowItemId);
 };
 
 fn_onLockThisItem = function (eRowArgs) {
@@ -2475,9 +2489,7 @@ fn_onUnLockThisItem = function (eRowArgs) {
     var col = eRowArgs.gridHandler.lockIconColumnNo;
 	if (col && col !== undefined)
       {eRowArgs.gridHandler.gridSetCellValue(eRowArgs.rowId,col,fn_GetLockedCellIconFormatByStatusCode(eRowArgs.gridHandler.icons,0));}
-};
-
-]]></method_code>
+};]]></method_code>
   <method_type>JavaScript</method_type>
   <name>CommonBase GridUtilities</name>
  </Item>

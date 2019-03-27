@@ -216,7 +216,7 @@
                 <allowed_context_menu>lock,unlock,view_item</allowed_context_menu>
                 <id keyed_name="60CA71A584EA40AF8F5D51B1035AC4E2" type="RecentlyVisited_ItemType">60CA71A584EA40AF8F5D51B1035AC4E2</id>
                 <item_type_name>ECR</item_type_name>
-                <related_id keyed_name="ECR" type="ItemType" name="ECR">2D4799413792453DA08C1EDE6AA22A76
+                <related_id keyed_name="ECR" type="ItemType" name="ECR">2D4799413792453DA08C1EDE6AA22A76</related_id>
                     <sort_order>1664</sort_order>
                     <source_id keyed_name="7B3C6D07C21D48639AEC9B9EFBF3183D" type="RecentlyVisited_Preferences">7B3C6D07C21D48639AEC9B9EFBF3183D</source_id>
                     <Relationships>

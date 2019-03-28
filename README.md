@@ -16,7 +16,7 @@ This project and the following release notes have been migrated from the old Ara
 
 Release | Notes
 --------|--------
-[v5.0.0](https://github.com/ArasLabs/my-recent-items/releases/tag/v5.0.0) | Bugfix and method optomization. Readme History Updated.
+[v5.0.0](https://github.com/ArasLabs/my-recent-items/releases/tag/v5.0.0) | Bugfix and method optimization. Readme History Updated.
 [v4.1](https://github.com/ArasLabs/my-recent-items/releases/tag/v4.1) | Fixes "Where Used" and "Structure Browser" context menu options.
 [v4](https://github.com/ArasLabs/my-recent-items/releases/tag/v4) | Update to support Aras Innovator 11 SP9.
 [v3](https://github.com/ArasLabs/my-recent-items/releases/tag/v3) | Aras 11 and Aras 10SP4++. Solution Package and Documentation. It loads on top of the standard ARAS Solutions PE,PM without any conflicts. See Readme.txt for installation steps.
